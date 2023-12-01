@@ -6,7 +6,7 @@ import NavBar from "./NavBar/NavBar";
 import ServiceChooser from "./ServiceChooser/ServiceChooser";
 
 const App = (props) => {
-	let BusinessName = "Termincek";
+	let BusinessName = "Terminček";
 
 	let sampleServices = [
 		{
