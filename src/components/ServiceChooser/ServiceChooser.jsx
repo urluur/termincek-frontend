@@ -21,14 +21,13 @@ const ServiceChooser = (props) => {
         placeholder={props.placeholder || "Search"}
         value={searchValue}
         onChange={handleSearch}
-        className='border p-1'
       />
-      <table className='table-auto w-full'>
-        <thead className='bg-gray-200'>
+      <table>
+        <thead>
           <tr>
-            <th className='text-left px-4 py-2'>Ime</th>
-            <th className='text-left px-4 py-2'>Čas</th>
-            <th className='text-left px-4 py-2'>Cena</th>
+            <th>Ime</th>
+            <th>Čas</th>
+            <th>Cena</th>
           </tr>
         </thead>
         {
@@ -40,8 +39,8 @@ const ServiceChooser = (props) => {
                     {service.name}
                   </button>
                 </td>
-                <td className='text-left px-4 py-2'>{service.time} min</td>
-                <td className='text-left px-4 py-2'>{service.price}€</td>
+                <td>{service.time} min</td>
+                <td>{service.price}€</td>
               </tr>
             )
           })
