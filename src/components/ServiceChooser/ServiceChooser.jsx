@@ -1,4 +1,9 @@
 import React, { useState } from 'react'
+import Table from 'react-bootstrap/Table'
+import Form from 'react-bootstrap/Form'
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 
 const ServiceChooser = (props) => {
 
@@ -14,39 +19,50 @@ const ServiceChooser = (props) => {
 
   return (
     <div>
+      <Container fluid>
+        <Row>
+          <Col>
+            <h2>Storitve</h2>
+          </Col>
+          <Col>
+            <Form.Control
+              type="text"
+              placeholder={props.placeholder || "Search"}
+              value={searchValue}
+              onChange={handleSearch}
+              className='px-3 mb-2 bg-light text-dark rounded-pill w-50 float-end'
+            />
+          </Col>
+        </Row>
 
-      <h2>Storitve</h2>
-      <input
-        type='text'
-        placeholder={props.placeholder || "Search"}
-        value={searchValue}
-        onChange={handleSearch}
-      />
-      <table>
-        <thead>
-          <tr>
-            <th>Ime</th>
-            <th>Čas</th>
-            <th>Cena</th>
-          </tr>
-        </thead>
-        {
-          filteredServices.map((service, i) => {
-            return (
-              <tr key='i' className={i % 2 === 1 ? 'bg-gray-100' : ''}>
-                <td className='text-left px-4 py-2 '>
-                  <button>
-                    {service.name}
-                  </button>
-                </td>
-                <td>{service.time} min</td>
-                <td>{service.price}€</td>
+        <Row>
+          <Table striped responsive hover bordered
+            className='rounded-pill'
+          >
+            <thead>
+              <tr>
+                <th>Ime</th>
+                <th>Čas</th>
+                <th>Cena</th>
               </tr>
-            )
-          })
-        }
-      </table>
+            </thead>
+            <tbody>
 
+              {
+                filteredServices.map((service, i) => {
+                  return (
+                    <tr key={i}>
+                      <td>{service.name}</td>
+                      <td>{service.time} min</td>
+                      <td>{service.price}€</td>
+                    </tr>
+                  )
+                })
+              }
+            </tbody>
+          </Table>
+        </Row>
+      </Container>
     </div>
   )
 }

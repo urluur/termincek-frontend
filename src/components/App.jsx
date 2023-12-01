@@ -1,4 +1,7 @@
 import React from "react";
+import Container from "react-bootstrap/Container";
+import "bootstrap/dist/css/bootstrap.min.css";
+
 import NavBar from "./NavBar/NavBar";
 import ServiceChooser from "./ServiceChooser/ServiceChooser";
 
@@ -42,8 +45,9 @@ const App = (props) => {
 		<div>
 			<NavBar BusinessName={BusinessName} />
 
-			<ServiceChooser services={sampleServices} />
-
+			<Container>
+				<ServiceChooser services={sampleServices} />
+			</Container>
 		</div>
 	);
 };
