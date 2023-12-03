@@ -1,9 +1,11 @@
 import React from "react";
+import { Route, Routes } from "react-router-dom";
 import Container from "react-bootstrap/Container";
+import ServiceChooser from "./ServiceChooser/ServiceChooser";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+import Home from "./Home";
 import NavBar from "./NavBar/NavBar";
-import ServiceChooser from "./ServiceChooser/ServiceChooser";
 
 const App = (props) => {
 	let BusinessName = "Terminček";
@@ -42,13 +44,15 @@ const App = (props) => {
 	];
 
 	return (
-		<div>
+		<>
 			<NavBar BusinessName={BusinessName} />
-
 			<Container>
-				<ServiceChooser services={sampleServices} />
+				<Routes>
+					<Route path="/" element={<Home />} />
+					<Route path="/narocanje" element={<ServiceChooser services={sampleServices} />} />
+				</Routes>
 			</Container>
-		</div>
+		</>
 	);
 };
 
