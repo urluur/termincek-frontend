@@ -1,25 +1,23 @@
-import React from "react";
-import Nav from 'react-bootstrap/Nav';
+import { Navbar, Nav, Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 function NavBar(props) {
 	return (
-
-		<Nav className='bg-light mb-5' activeKey="/narocanje">
-			<Nav.Link>
-				<Link className="text-dark" to="/">{props.BusinessName}</Link>
-			</Nav.Link>
-			<Nav.Link>
-				<Link className="text-dark" to="/narocanje">Naročanje</Link>
-			</Nav.Link>
-			<Nav.Link>
-				<Link className="text-dark" eventKey="link-1">Zemljevid</Link>
-			</Nav.Link>
-			<Nav.Link>
-				<Link className="text-dark" eventKey="link-2">Kontakt</Link>
-			</Nav.Link>
-		</Nav>
-
+		<Navbar bg="light" variant="light" expand="lg" className="mb-5">
+			<Container>
+				<Navbar.Brand><Link className="text-dark" to="/">{props.BusinessName}</Link></Navbar.Brand>
+				<Navbar.Toggle aria-controls="basic-navbar-nav" />
+				<Navbar.Collapse id="basic-navbar-nav">
+					<Nav className="ml-auto">
+						<Nav.Link><Link className="text-dark" to="/narocanje">Naročanje</Link></Nav.Link>
+						<Nav.Link><Link className="text-dark" to="/zemljevid">Zemljevid</Link></Nav.Link>
+						<Nav.Link><Link className="text-dark" to="/kontakt">Kontakt</Link></Nav.Link>
+						<Nav.Link><Link className="text-dark" to="/login">Login</Link></Nav.Link>
+						<Nav.Link><Link className="text-dark" to="/register">Register</Link></Nav.Link>
+					</Nav>
+				</Navbar.Collapse>
+			</Container>
+		</Navbar>
 	);
 }
 
