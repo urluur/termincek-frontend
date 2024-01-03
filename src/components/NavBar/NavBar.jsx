@@ -12,8 +12,8 @@ function NavBar(props) {
 						<Nav.Link><Link className="text-dark" to="/narocanje">Naročanje</Link></Nav.Link>
 						<Nav.Link><Link className="text-dark" to="/zemljevid">Zemljevid</Link></Nav.Link>
 						<Nav.Link><Link className="text-dark" to="/kontakt">Kontakt</Link></Nav.Link>
-						<Nav.Link><Link className="text-dark" to="/login">Login</Link></Nav.Link>
-						<Nav.Link><Link className="text-dark" to="/register">Register</Link></Nav.Link>
+						<Nav.Link><Link className="text-dark" to="/prijava">Prijava</Link></Nav.Link>
+						<Nav.Link><Link className="text-dark" to="/registracija">Registracija</Link></Nav.Link>
 					</Nav>
 				</Navbar.Collapse>
 			</Container>
