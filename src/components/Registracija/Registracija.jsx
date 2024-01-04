@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Container, Form, Button, Row, Col, Card } from 'react-bootstrap';
+import React, { useState, useEffect } from "react";
+import { Container, Form, Button, Row, Col, Card, Alert } from 'react-bootstrap';
 import axios from "axios";
 
 const Registracija = () => {
@@ -10,17 +10,29 @@ const Registracija = () => {
   const [potrdiGeslo, setPotrdiGeslo] = useState('');
   const [telefon, setTelefon] = useState('');
 
+  const [isValid, setIsValid] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleInputChange = (setter) => (event) => {
+    // Clear the error message when the user starts typing
+    setErrorMessage('');
+    setter(event.target.value);
+  };
+
+  useEffect(() => {
+    setIsValid(ime !== '' && eposta !== '' && geslo !== '' && telefon !== '');
+  }, [ime, eposta, geslo, telefon]);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (geslo !== potrdiGeslo) {
-      alert('Gesli nista enaki!');
+      setErrorMessage('Gesli nista enaki.');
       return;
     }
 
     try {
-      // send data to server
-      const response = await axios.post('http://localhost:3001/uporabniki/registracija', {
+      const response = await axios.post('http://localhost:5050/registracija', {
         ime: ime,
         priimek: priimek,
         eposta: eposta,
@@ -33,47 +45,47 @@ const Registracija = () => {
         window.location.href = '/';
       }
       else {
-        alert('Registracija neuspešna!');
+        setErrorMessage('Registracija neuspešna.');
       }
     } catch (error) {
-      console.error("Error: ", error);
-      alert('Registracija neuspešna!');
+      setErrorMessage('Registracija neuspešna.');
     }
   };
 
   return (
-    <Container className="mt-5">
+    <Container className="mt-4">
       <Row className="justify-content-md-center">
         <Col xs={12} md={6}>
-          <Card>
+          <Card className="mb-4">
             <Card.Body>
               <Card.Title className="mb-4">Registracija</Card.Title>
               <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3">
                   <Form.Label>Ime</Form.Label>
-                  <Form.Control type="text" placeholder="Samo" value={ime} onChange={(e) => setIme(e.target.value)} />
+                  <Form.Control type="text" placeholder="Samo" value={ime} onChange={handleInputChange(setIme)} />
                 </Form.Group>
                 <Form.Group className="mb-3">
                   <Form.Label>Priimek</Form.Label>
-                  <Form.Control type="text" placeholder="Primer" value={priimek} onChange={(e) => setPriimek(e.target.value)} />
+                  <Form.Control type="text" placeholder="Primer" value={priimek} onChange={handleInputChange(setPriimek)} />
                 </Form.Group>
                 <Form.Group className="mb-3">
                   <Form.Label>E-pošta</Form.Label>
-                  <Form.Control type="email" placeholder="Vnesite e-pošto" value={eposta} onChange={(e) => setEposta(e.target.value)} />
+                  <Form.Control type="email" placeholder="Vnesite e-pošto" value={eposta} onChange={handleInputChange(setEposta)} />
                 </Form.Group>
                 <Form.Group className="mb-3">
                   <Form.Label>Geslo</Form.Label>
-                  <Form.Control type="password" placeholder="Vnesite geslo" value={geslo} onChange={(e) => setGeslo(e.target.value)} />
+                  <Form.Control type="password" placeholder="Vnesite geslo" value={geslo} onChange={handleInputChange(setGeslo)} />
                 </Form.Group>
                 <Form.Group className="mb-3">
                   <Form.Label>Potrdi geslo</Form.Label>
-                  <Form.Control type="password" placeholder="Ponovno vnesite geslo" value={potrdiGeslo} onChange={(e) => setPotrdiGeslo(e.target.value)} />
+                  <Form.Control type="password" placeholder="Ponovno vnesite geslo" value={potrdiGeslo} onChange={handleInputChange(setPotrdiGeslo)} />
                 </Form.Group>
                 <Form.Group className="mb-3">
                   <Form.Label>Telefon</Form.Label>
-                  <Form.Control type="tel" pattern="[0-9]{3}[- ]?[0-9]{3}[- ]]?[0-9]{3}" placeholder="040-123-456" value={telefon} onChange={(e) => setTelefon(e.target.value)} />
+                  <Form.Control type="tel" pattern="[0-9]{3}[- ]?[0-9]{3}[- ]]?[0-9]{3}" placeholder="040-123-456" value={telefon} onChange={handleInputChange(setTelefon)} />
                 </Form.Group>
-                <Button variant="success" type="submit" className="mt-3">Registracija</Button>
+                <Button variant="success" type="submit" className="mt-3" disabled={!isValid}>Registracija</Button>
+                {errorMessage && <Alert variant="danger" className="mt-3">{errorMessage}</Alert>}
               </Form>
             </Card.Body>
           </Card>
