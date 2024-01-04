@@ -4,8 +4,8 @@ import Container from "react-bootstrap/Container";
 import ServiceChooser from "./ServiceChooser/ServiceChooser";
 import Map from "./NavBar/Map/Map";
 import Contact from "./NavBar/Contact/Contact";
-import Login from "./Login/Login";
-import Register from "./Register/Register";
+import Prijava from "./Prijava/Prijava";
+import Registracija from "./Registracija/Registracija";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import Home from "./Home";
@@ -56,8 +56,8 @@ const App = (props) => {
 					<Route path="/narocanje" element={<ServiceChooser services={sampleServices} />} />
 					<Route path="/zemljevid" element={<Map />} />
 					<Route path="/kontakt" element={<Contact />} />
-					<Route path="/login" element={<Login />} />
-					<Route path="/register" element={<Register />} />
+					<Route path="/prijava" element={<Prijava />} />
+					<Route path="/registracija" element={<Registracija />} />
 					<Route path="*" element={<h1>404</h1>} />
 				</Routes>
 			</Container>
