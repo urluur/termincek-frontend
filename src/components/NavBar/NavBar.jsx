@@ -1,9 +1,20 @@
 import { Navbar, Nav, Container, Image } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 function NavBar(props) {
+
+	const location = useLocation();
+
+	const renderLink = (path, label) => {
+		return location.pathname === path ? (
+			<Nav.Link disabled>{label}</Nav.Link>
+		) : (
+			<Nav.Link><Link className="text-dark" to={path}>{label}</Link></Nav.Link>
+		);
+	};
+
 	return (
-		<Navbar bg="light" variant="light" expand="lg" className="mb-5">
+		<Navbar bg="light" variant="light" expand="md" className="mb-3">
 			<Container>
 				<Navbar.Brand>
 					<Image
@@ -18,15 +29,29 @@ function NavBar(props) {
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />
 				<Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
 					<Nav className="ml-auto">
-						<Nav.Link><Link className="text-dark" to="/narocanje">Naročanje</Link></Nav.Link>
-						<Nav.Link><Link className="text-dark" to="/zemljevid">Zemljevid</Link></Nav.Link>
-						<Nav.Link><Link className="text-dark" to="/kontakt">Kontakt</Link></Nav.Link>
-						<Nav.Link><Link className="text-dark" to="/prijava">Prijava</Link></Nav.Link>
-						<Nav.Link><Link className="text-dark" to="/registracija">Registracija</Link></Nav.Link>
+
+						{props.podjetje.chosen &&
+							<>
+								{renderLink(`/podjetje/${props.podjetje.podjetje_id}/narocanje`, 'Naročanje')}
+								{renderLink(`/podjetje/${props.podjetje.podjetje_id}/zemljevid`, 'Zemljevid')}
+								{renderLink(`/podjetje/${props.podjetje.podjetje_id}/kontakt`, 'Kontakt')}
+							</>
+						}
+						{props.stranka.loggedIn ? (
+							<>
+								{renderLink('/profil', 'Profil')}
+								{renderLink('/odjava', 'Odjava')}
+							</>
+						) : (
+							<>
+								{renderLink('/prijava', 'Prijava')}
+								{renderLink('/registracija', 'Registracija')}
+							</>
+						)}
 					</Nav>
 				</Navbar.Collapse>
 			</Container>
-		</Navbar>
+		</Navbar >
 	);
 }
 

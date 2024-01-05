@@ -5,7 +5,7 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
-const ServiceChooser = (props) => {
+const IzbiraStoritve = (props) => {
 
   const [searchValue, setSearchValue] = useState('')
 
@@ -13,13 +13,13 @@ const ServiceChooser = (props) => {
     setSearchValue(e.target.value)
   }
 
-  const filteredServices = props.services.filter(service => {
+  const iskaneStoritve = props.storitve.filter(service => {
     return service.name.toLowerCase().includes(searchValue.toLowerCase());
   })
 
   return (
     <div>
-      <Container fluid>
+      <Container fluid className='mt-1'>
         <Row>
           <Col>
             <h2>Storitve</h2>
@@ -49,7 +49,7 @@ const ServiceChooser = (props) => {
             <tbody>
 
               {
-                filteredServices.map((service, i) => {
+                iskaneStoritve.map((service, i) => {
                   return (
                     <tr key={i}>
                       <td>{service.name}</td>
@@ -67,4 +67,4 @@ const ServiceChooser = (props) => {
   )
 }
 
-export default ServiceChooser
+export default IzbiraStoritve

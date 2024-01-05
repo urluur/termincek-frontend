@@ -1,9 +1,10 @@
 import React from "react";
 
-const Contact = () => {
+const Contact = (props) => {
   return (
     <>
       <h1>Contact</h1>
+      {/* TODO: od vsakega delavca posebi telefonsko in mail */}
     </>
   );
 }
