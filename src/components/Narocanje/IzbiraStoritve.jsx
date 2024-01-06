@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Table from 'react-bootstrap/Table'
 import Form from 'react-bootstrap/Form'
 import Container from 'react-bootstrap/Container'
@@ -6,16 +6,22 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
 const IzbiraStoritve = (props) => {
-
+  const { podjetje } = props;
   const [searchValue, setSearchValue] = useState('')
+  const [iskaneStoritve, setIskaneStoritve] = useState([])
 
   const handleSearch = (e) => {
     setSearchValue(e.target.value)
   }
 
-  const iskaneStoritve = props.storitve.filter(service => {
-    return service.name.toLowerCase().includes(searchValue.toLowerCase());
-  })
+  useEffect(() => {
+    if (podjetje.storitve) {
+      const filteredStoritve = podjetje.storitve.filter(storitev => {
+        return storitev.storitev_ime.toLowerCase().includes(searchValue.toLowerCase());
+      });
+      setIskaneStoritve(filteredStoritve);
+    }
+  }, [podjetje, searchValue]);
 
   return (
     <div>
@@ -49,12 +55,12 @@ const IzbiraStoritve = (props) => {
             <tbody>
 
               {
-                iskaneStoritve.map((service, i) => {
+                iskaneStoritve.map((storitev, i) => {
                   return (
                     <tr key={i}>
-                      <td>{service.name}</td>
-                      <td>{service.time} min</td>
-                      <td>{service.price}€</td>
+                      <td>{storitev.storitev_ime}</td>
+                      <td>{storitev.storitev_trajanje} min</td>
+                      <td>{storitev.storitev_cena}€</td>
                     </tr>
                   )
                 })
