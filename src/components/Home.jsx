@@ -27,10 +27,11 @@ function Home(props) {
 
   props.setPodjetje({
     chosen: false,
-    podjetje_id: null,
-    podjetje_naziv: null,
-    podjetje_naslov: null,
-    podjetje_slika: null
+    podjetje_id: "",
+    podjetje_naziv: "",
+    podjetje_naslov: "",
+    podjetje_slika: "",
+    storitve: []
   });
 
   return (
