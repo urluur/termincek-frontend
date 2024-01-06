@@ -7,7 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Home from "./Home";
 import NavBar from "./NavBar/NavBar";
 import Zemljevid from "./NavBar/Zemljevid/Zemljevid";
-import Contact from "./NavBar/Contact/Contact";
+import Kontakt from "./NavBar/Kontakt/Kontakt";
 import Prijava from "./Prijava/Prijava";
 import Registracija from "./Registracija/Registracija";
 import Narocanje from './Narocanje/Narocanje';
@@ -45,7 +45,7 @@ const App = (props) => {
 
 					<Route path="/podjetje/:podjetje_id/narocanje" element={<Narocanje podjetje={podjetje} setPodjetje={setPodjetje} />} />
 					<Route path="/podjetje/:podjetje_id/zemljevid" element={<Zemljevid podjetje={podjetje} setPodjetje={setPodjetje} />} />
-					<Route path="/podjetje/:podjetje_id/kontakt" element={<Contact podjetje={podjetje} setPodjetje={setPodjetje} />} />
+					<Route path="/podjetje/:podjetje_id/kontakt" element={<Kontakt podjetje={podjetje} setPodjetje={setPodjetje} />} />
 
 					<Route path="/prijava" element={<Prijava setStranka={setStranka} />} />
 					<Route path="/registracija" element={<Registracija setStranka={setStranka} />} />
