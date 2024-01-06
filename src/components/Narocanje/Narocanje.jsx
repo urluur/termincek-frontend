@@ -4,9 +4,10 @@ import axios from 'axios';
 import { Container, Card, Row, Col } from 'react-bootstrap';
 import IzbiraStoritve from './IzbiraStoritve';
 import Loading from '../Loading/Loading';
+import IzbiraCasa from './IzbiraCasa';
 
 function Narocanje(props) {
-  const { podjetje, setPodjetje } = props;
+  const { podjetje, setPodjetje, narocilo, setNarocilo, storitev, setStoritev } = props;
   const { podjetje_id } = useParams();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
@@ -84,7 +85,26 @@ function Narocanje(props) {
             }} />
             <Card.Body>
               <Card.Title className='mb-3'>{podjetje.podjetje_naziv}</Card.Title>
-              {isLoading ? <Loading /> : <IzbiraStoritve podjetje={podjetje} />}
+              {
+                isLoading ?
+                  <Loading />
+                  :
+                  <>
+                    {
+                      !storitev.potrditev && !narocilo.cas_potrditev && !narocilo.potrditev ?
+                        <IzbiraStoritve podjetje={podjetje} setNarocilo={setNarocilo} storitev={storitev} setStoritev={setStoritev} />
+                        :
+                        <>
+                          {
+                            !narocilo.cas_potrditev && !narocilo.potrditev ?
+                              <IzbiraCasa podjetje={podjetje} setNarocilo={setNarocilo} setStoritev={setStoritev} /> :
+                              <h1>Prijavite se</h1>
+                            // storitev.potrditev && !narocilo.cas_potrditev && !narocilo.potrditev
+                          }
+                        </>
+                    }
+                  </>
+              }
             </Card.Body>
           </Card>
         </Col>

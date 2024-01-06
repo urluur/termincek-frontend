@@ -4,14 +4,58 @@ import Form from 'react-bootstrap/Form'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Button from 'react-bootstrap/Button';
 
 const IzbiraStoritve = (props) => {
-  const { podjetje } = props;
+  const { podjetje, setNarocilo, storitev, setStoritev } = props;
   const [searchValue, setSearchValue] = useState('')
   const [iskaneStoritve, setIskaneStoritve] = useState([])
 
+  const [selectedRow, setSelectedRow] = useState(null)
+
   const handleSearch = (e) => {
     setSearchValue(e.target.value)
+  }
+
+  const handleRowClick = (storitev) => {
+    if (storitev.storitev_id === selectedRow) {
+      setSelectedRow('');
+      setStoritev({
+        potrditev: false,
+        storitev_id: "",
+        storitev_ime: "",
+        storitev_opis: "",
+        storitev_slika: "",
+        storitev_trajanje: "",
+        storitev_cena: ""
+      }
+      );
+    } else {
+      setSelectedRow(storitev.storitev_id);
+      setStoritev(storitev);
+    }
+  }
+
+  function handleNextClick() {
+    setNarocilo(prevNarocilo => {
+      return {
+        ...prevNarocilo,
+        storitev_id: storitev.storitev_id
+      }
+    }
+    )
+    setStoritev(prevStoritev => {
+      return {
+        ...prevStoritev,
+        potrditev: true,
+        storitev_id: storitev.storitev_id,
+        storitev_ime: storitev.storitev_ime,
+        storitev_opis: storitev.storitev_opis,
+        storitev_slika: storitev.storitev_slika,
+        storitev_trajanje: storitev.storitev_trajanje,
+        storitev_cena: storitev.storitev_cena
+      }
+    })
   }
 
   useEffect(() => {
@@ -23,12 +67,18 @@ const IzbiraStoritve = (props) => {
     }
   }, [podjetje, searchValue]);
 
+  useEffect(() => {
+    if (storitev.storitev_id) {
+      setSelectedRow(storitev.storitev_id);
+    }
+  }, [storitev.storitev_id]);
+
   return (
     <div>
       <Container fluid className='mt-1'>
         <Row>
           <Col>
-            <h2>Storitve</h2>
+            <h2>Izberite storitev</h2>
           </Col>
           <Col>
             <Form.Control
@@ -53,12 +103,11 @@ const IzbiraStoritve = (props) => {
               </tr>
             </thead>
             <tbody>
-
               {
                 iskaneStoritve.map((storitev, i) => {
                   return (
-                    <tr key={i}>
-                      <td>{storitev.storitev_ime}</td>
+                    <tr key={i} onClick={() => handleRowClick(storitev)}>
+                      <td>{storitev.storitev_ime} {storitev.storitev_id === selectedRow && '✅'}</td>
                       <td>{storitev.storitev_trajanje} min</td>
                       <td>{storitev.storitev_cena}€</td>
                     </tr>
@@ -68,6 +117,9 @@ const IzbiraStoritve = (props) => {
             </tbody>
           </Table>
         </Row>
+        <div className="d-flex justify-content-end">
+          <Button variant="primary" onClick={handleNextClick} disabled={!storitev.storitev_id}>Določi čas</Button>
+        </div>
       </Container>
     </div>
   )

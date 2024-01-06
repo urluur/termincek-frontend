@@ -34,6 +34,26 @@ function Home(props) {
     storitve: []
   });
 
+  props.setNarocilo({
+    potrditev: false,
+    potrditev_cas: false,
+    narocilo_cas: "",
+    narocilo_opombe: "",
+    storitev_id: "",
+    stranka_id: "",
+    delavec_id: ""
+  });
+
+  props.setStoritev({
+    potrditev: false,
+    storitev_id: "",
+    storitev_ime: "",
+    storitev_opis: "",
+    storitev_slika: "",
+    storitev_trajanje: "",
+    storitev_cena: ""
+  });
+
   return (
     <Container className='mt-5'>
       <Row className="justify-content-md-center">
