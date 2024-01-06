@@ -6,6 +6,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
 const IzbiraStoritve = (props) => {
+  const { podjetje } = props;
   const [searchValue, setSearchValue] = useState('')
   const [iskaneStoritve, setIskaneStoritve] = useState([])
 
@@ -14,18 +15,13 @@ const IzbiraStoritve = (props) => {
   }
 
   useEffect(() => {
-    if (props.podjetje && props.podjetje.storitve) {
-      const filteredStoritve = props.podjetje.storitve.filter(storitev => {
+    if (podjetje.storitve) {
+      const filteredStoritve = podjetje.storitve.filter(storitev => {
         return storitev.storitev_ime.toLowerCase().includes(searchValue.toLowerCase());
       });
       setIskaneStoritve(filteredStoritve);
     }
-  }, [props.podjetje, searchValue]);
-
-  if (!props.podjetje.storitve) {
-    // TODO: to je prou nek last resort
-    window.location.reload();
-  }
+  }, [podjetje, searchValue]);
 
   return (
     <div>
