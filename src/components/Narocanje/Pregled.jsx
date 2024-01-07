@@ -1,8 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Button, Card, Form } from 'react-bootstrap';
 import axios from 'axios';
 
-function Pregled({ narocilo, setNarocilo }) {
+import { NarociloContext } from "../../contexts/contexts";
+
+
+function Pregled() {
+
+  const { narocilo, setNarocilo } = useContext(NarociloContext);
+
+
 
   const handleBackClick = () => {
     setNarocilo(prevNarocilo => ({

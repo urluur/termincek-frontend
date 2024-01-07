@@ -1,9 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Form, Button, Row, Col, Card, Alert } from 'react-bootstrap';
 import axios from "axios";
 
+import { StrankaContext } from "../../contexts/contexts";
+
+
 const Registracija = (props) => {
+
+  const { setStranka } = useContext(StrankaContext);
+
   const [ime, setIme] = useState('');
   const [priimek, setPriimek] = useState('');
   const [eposta, setEposta] = useState('');
@@ -44,7 +50,7 @@ const Registracija = (props) => {
 
       if (response.status === 200) {
         navigate('/');
-        props.setStranka(
+        setStranka(
           {
             loggedIn: true,
             stranka_id: response.data.stranka_id,

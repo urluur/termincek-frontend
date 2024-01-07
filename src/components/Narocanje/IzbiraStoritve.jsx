@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Table from 'react-bootstrap/Table'
 import Form from 'react-bootstrap/Form'
 import Container from 'react-bootstrap/Container'
@@ -6,8 +6,15 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button';
 
-const IzbiraStoritve = (props) => {
-  const { podjetje, setNarocilo, storitev, setStoritev } = props;
+import { PodjetjeContext, NarociloContext, StoritevContext } from "../../contexts/contexts";
+
+const IzbiraStoritve = () => {
+
+
+  const { podjetje } = useContext(PodjetjeContext);
+  const { setNarocilo } = useContext(NarociloContext);
+  const { storitev, setStoritev } = useContext(StoritevContext);
+
   const [searchValue, setSearchValue] = useState('')
   const [iskaneStoritve, setIskaneStoritve] = useState([])
 
@@ -83,7 +90,7 @@ const IzbiraStoritve = (props) => {
           <Col>
             <Form.Control
               type="text"
-              placeholder={props.placeholder || "Search"}
+              placeholder={"Iskanje"}
               value={searchValue}
               onChange={handleSearch}
               className='px-3 mb-2 bg-light text-dark rounded-pill w-50 float-end'

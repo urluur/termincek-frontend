@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useNavigate } from "react-router-dom";
 
-function Odjava(props) {
+import { StrankaContext } from "../../../contexts/contexts";
 
-  props.setStranka({
+function Odjava() {
+
+  const { setStranka } = useContext(StrankaContext);
+
+  setStranka({
     loggedIn: false,
     stranka_id: "",
     stranka_ime: "",

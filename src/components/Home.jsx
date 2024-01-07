@@ -1,10 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { Container, ListGroup, Row, Col, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Loading from './Loading/Loading';
+import { PodjetjeContext, NarociloContext, StoritevContext, DelavciContext } from "../contexts/contexts";
+function Home() {
 
-function Home(props) {
+
+  const { setPodjetje } = useContext(PodjetjeContext);
+  const { setNarocilo } = useContext(NarociloContext);
+  const { setStoritev } = useContext(StoritevContext);
+  const { setDelavci } = useContext(DelavciContext);
+
   const [podjetja, setPodjetja] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -18,14 +25,14 @@ function Home(props) {
         console.error('Error:', error);
         setIsLoading(false);
       });
-  }, []);
+  }, [setPodjetja]);
 
   if (isLoading) {
     return (
       <Loading />);
   }
 
-  props.setPodjetje({
+  setPodjetje({
     chosen: false,
     podjetje_id: "",
     podjetje_naziv: "",
@@ -34,7 +41,7 @@ function Home(props) {
     storitve: []
   });
 
-  props.setNarocilo({
+  setNarocilo({
     potrditev: false,
     cas_potrditev: false,
     narocilo_cas: "",
@@ -44,7 +51,7 @@ function Home(props) {
     delavec_id: ""
   });
 
-  props.setStoritev({
+  setStoritev({
     potrditev: false,
     storitev_id: "",
     storitev_ime: "",
@@ -54,7 +61,7 @@ function Home(props) {
     storitev_cena: ""
   });
 
-  props.setDelavci([
+  setDelavci([
     {
       delavec_id: "",
       delavec_ime: "",

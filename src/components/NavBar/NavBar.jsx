@@ -1,7 +1,13 @@
+import { useContext } from 'react';
 import { Navbar, Nav, Container, Image } from 'react-bootstrap';
 import { Link, useLocation } from 'react-router-dom';
 
-function NavBar(props) {
+import { StrankaContext, PodjetjeContext } from "../../contexts/contexts";
+
+function NavBar() {
+
+	const { stranka } = useContext(StrankaContext);
+	const { podjetje } = useContext(PodjetjeContext);
 
 	const location = useLocation();
 
@@ -24,20 +30,20 @@ function NavBar(props) {
 						className="d-inline-block align-top"
 						alt="favicon"
 					/>
-					<Link className="text-dark ms-4" to="/">{props.BusinessName}</Link>
+					<Link className="text-dark ms-4" to="/">Terminček</Link>
 				</Navbar.Brand>
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />
 				<Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
 					<Nav className="ml-auto">
 
-						{props.podjetje.chosen &&
+						{podjetje.chosen &&
 							<>
-								{renderLink(`/podjetje/${props.podjetje.podjetje_id}/narocanje`, 'Naročanje')}
-								{renderLink(`/podjetje/${props.podjetje.podjetje_id}/zemljevid`, 'Zemljevid')}
-								{renderLink(`/podjetje/${props.podjetje.podjetje_id}/kontakt`, 'Kontakt')}
+								{renderLink(`/podjetje/${podjetje.podjetje_id}/narocanje`, 'Naročanje')}
+								{renderLink(`/podjetje/${podjetje.podjetje_id}/zemljevid`, 'Zemljevid')}
+								{renderLink(`/podjetje/${podjetje.podjetje_id}/kontakt`, 'Kontakt')}
 							</>
 						}
-						{props.stranka.loggedIn ? (
+						{stranka.loggedIn ? (
 							<>
 								{renderLink('/profil', 'Profil')}
 								{renderLink('/odjava', 'Odjava')}

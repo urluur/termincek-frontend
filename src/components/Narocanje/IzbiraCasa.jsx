@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Col, Container, Row, Button, Form } from 'react-bootstrap';
+
+import { DelavciContext } from "../../contexts/contexts";
 
 const IzbiraCasa = (props) => {
 
-  const { delavci } = props;
+  const { delavci } = useContext(DelavciContext);
 
   // TODO: termin more actually bit fraj itd...
 

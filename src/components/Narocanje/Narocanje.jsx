@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Container, Card, Row, Col } from 'react-bootstrap';
@@ -8,8 +8,16 @@ import IzbiraCasa from './IzbiraCasa';
 import Pregled from './Pregled';
 import Potrdilo from './Potrdilo';
 
+import { StrankaContext, PodjetjeContext, NarociloContext, StoritevContext, DelavciContext } from "../../contexts/contexts";
+
 function Narocanje(props) {
-  const { podjetje, setPodjetje, narocilo, setNarocilo, storitev, setStoritev, stranka, setStranka, delavci, setDelavci } = props;
+
+  const { stranka } = useContext(StrankaContext);
+  const { podjetje, setPodjetje } = useContext(PodjetjeContext);
+  const { narocilo, setNarocilo } = useContext(NarociloContext);
+  const { storitev, setStoritev } = useContext(StoritevContext);
+  const { delavci, setDelavci } = useContext(DelavciContext);
+
   const { podjetje_id } = useParams();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);

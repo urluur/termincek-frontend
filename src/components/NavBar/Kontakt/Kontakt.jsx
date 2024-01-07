@@ -1,14 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Container, Card, Row, Col, Image } from 'react-bootstrap';
 
+import { DelavciContext } from "../../../contexts/contexts";
+
+
 import Loading from "../../Loading/Loading";
 
-const Kontakt = (props) => {
+const Kontakt = () => {
+
+  const { delavci, setDelavci } = useContext(DelavciContext);
 
   const { podjetje_id } = useParams();
-  const { delavci, setDelavci } = props;
   const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {

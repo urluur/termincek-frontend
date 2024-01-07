@@ -1,6 +1,8 @@
 import axios from 'axios';
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Card, Button, ListGroup, Container, Row, Col } from 'react-bootstrap';
+
+import { StrankaContext } from "../../../contexts/contexts";
 
 function EnoNarocilo({ narocilo, prekliciNarocilo }) {
   return (
@@ -22,13 +24,16 @@ function EnoNarocilo({ narocilo, prekliciNarocilo }) {
   );
 }
 
-function Profil(props) {
+function Profil() {
+
+  const { stranka } = useContext(StrankaContext);
+
   const [narocila, setNarocila] = useState([]);
 
   useEffect(() => {
     const fetchNarocila = async () => {
       try {
-        const response = await axios.get(`http://localhost:5050/narocila/${props.stranka.stranka_id}`);
+        const response = await axios.get(`http://localhost:5050/narocila/${stranka.stranka_id}`);
         setNarocila(response.data);
       } catch (error) {
         console.error('Error:', error);
@@ -36,7 +41,7 @@ function Profil(props) {
     };
 
     fetchNarocila();
-  }, [props.stranka.stranka_id]);
+  }, [stranka.stranka_id]);
 
   const prekliciNarocilo = async (id) => {
     try {
@@ -54,8 +59,8 @@ function Profil(props) {
         <Col xs={12}>
           <Card style={{ width: '100%' }}>
             <Card.Body>
-              <Card.Title>{props.stranka.stranka_ime} {props.stranka.stranka_priimek}</Card.Title>
-              <Card.Subtitle className="mb-2 text-muted">{props.stranka.stranka_eposta}</Card.Subtitle>
+              <Card.Title>{stranka.stranka_ime} {stranka.stranka_priimek}</Card.Title>
+              <Card.Subtitle className="mb-2 text-muted">{stranka.stranka_eposta}</Card.Subtitle>
             </Card.Body>
           </Card>
         </Col>

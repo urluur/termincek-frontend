@@ -14,6 +14,8 @@ import Narocanje from './Narocanje/Narocanje';
 import Profil from './NavBar/Profil/Profil';
 import Odjava from "./NavBar/Odjava/Odjava";
 
+import { StrankaContext, PodjetjeContext, NarociloContext, StoritevContext, DelavciContext } from "../contexts/contexts";
+
 const App = (props) => {
 	let BusinessName = "Terminček";
 
@@ -67,45 +69,56 @@ const App = (props) => {
 
 	return (
 		<>
-			<NavBar BusinessName={BusinessName} stranka={stranka} podjetje={podjetje} />
+			<StrankaContext.Provider value={{ stranka, setStranka }}>
+				<PodjetjeContext.Provider value={{ podjetje, setPodjetje }}>
+					<NarociloContext.Provider value={{ narocilo, setNarocilo }}>
+						<StoritevContext.Provider value={{ storitev, setStoritev }}>
+							<DelavciContext.Provider value={{ delavci, setDelavci }}>
 
-			<Container>
-				<Routes>
+								<NavBar BusinessName={BusinessName} stranka={stranka} podjetje={podjetje} />
 
-					<Route path="/" element={<Home setPodjetje={setPodjetje} setNarocilo={setNarocilo} setStoritev={setStoritev} setDelavci={setDelavci} />} />
+								<Container>
+									<Routes>
 
-					<Route path="/podjetje/:podjetje_id/narocanje" element={<Narocanje podjetje={podjetje} setPodjetje={setPodjetje} narocilo={narocilo} setNarocilo={setNarocilo} storitev={storitev} setStoritev={setStoritev} stranka={stranka} setStranka={setStranka} delavci={delavci} setDelavci={setDelavci} />} />
-					<Route path="/podjetje/:podjetje_id/zemljevid" element={<Zemljevid podjetje={podjetje} setPodjetje={setPodjetje} />} />
-					<Route path="/podjetje/:podjetje_id/kontakt" element={<Kontakt delavci={delavci} setDelavci={setDelavci} />} />
+										<Route path="/" element={<Home />} />
 
-					<Route path="/prijava" element={<Prijava setStranka={setStranka} />} />
-					<Route path="/registracija" element={<Registracija setStranka={setStranka} />} />
+										<Route path="/podjetje/:podjetje_id/narocanje" element={<Narocanje />} />
+										<Route path="/podjetje/:podjetje_id/zemljevid" element={<Zemljevid />} />
+										<Route path="/podjetje/:podjetje_id/kontakt" element={<Kontakt />} />
 
-					<Route path='/profil' element={<Profil stranka={stranka} />} />
-					<Route path='/odjava' element={<Odjava setStranka={setStranka} />} />
+										<Route path="/prijava" element={<Prijava />} />
+										<Route path="/registracija" element={<Registracija />} />
 
-					<Route path="*" element={<h1>404</h1>} />
+										<Route path='/profil' element={<Profil />} />
+										<Route path='/odjava' element={<Odjava />} />
 
-				</Routes>
-				{
-					! // comment this line to show debug info
-					true &&
-					<>
-						Debug:
-						<p />
-						Storitev: {JSON.stringify(storitev)}
-						<p />
-						Podjetje: {JSON.stringify(podjetje)}
-						<p />
-						Stranka {JSON.stringify(stranka)}
-						<p />
-						Narocilo: {JSON.stringify(narocilo)}
-						<p />
-						Delavci: {JSON.stringify(delavci)}
-					</>
-				}
-			</Container>
+										<Route path="*" element={<h1>404</h1>} />
 
+									</Routes>
+									{
+										! // comment this line to show debug info
+										true &&
+										<>
+											Debug:
+											<p />
+											Storitev: {JSON.stringify(storitev)}
+											<p />
+											Podjetje: {JSON.stringify(podjetje)}
+											<p />
+											Stranka {JSON.stringify(stranka)}
+											<p />
+											Narocilo: {JSON.stringify(narocilo)}
+											<p />
+											Delavci: {JSON.stringify(delavci)}
+										</>
+									}
+								</Container>
+
+							</DelavciContext.Provider>
+						</StoritevContext.Provider>
+					</NarociloContext.Provider>
+				</PodjetjeContext.Provider>
+			</StrankaContext.Provider>
 		</>
 	);
 };

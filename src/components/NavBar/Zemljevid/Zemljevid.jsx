@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
+import { PodjetjeContext } from "../../../contexts/contexts";
 
-const Zemljevid = (props) => {
+const Zemljevid = () => {
+
+
+  const { podjetje } = useContext(PodjetjeContext);
 
 
   return (
     <>
       <h1>Zemljevid</h1>
-      <p>{props.podjetje.podjetje_naslov}</p>
+      <p>{podjetje.podjetje_naslov}</p>
     </>
   );
 }

@@ -1,14 +1,17 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button, Container, Row, Col } from 'react-bootstrap';
 
-function Potrdilo(props) {
+import { NarociloContext } from "../../contexts/contexts";
+
+function Potrdilo() {
+  const { setNarocilo } = useContext(NarociloContext);
 
   const navigate = useNavigate();
 
   const handleButtonClick = () => {
     // TODO: reset narocilo
-    props.setNarocilo({
+    setNarocilo({
       potrditev: false,
       cas_potrditev: false,
       narocilo_cas: "",

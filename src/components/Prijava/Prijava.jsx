@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Form, Button, Row, Col, Card, Alert } from 'react-bootstrap';
 import axios from "axios";
 
-const Prijava = (props) => {
+import { StrankaContext } from "../../contexts/contexts";
+
+
+const Prijava = () => {
+
+  const { setStranka } = useContext(StrankaContext);
+
+
   const [eposta, setEposta] = useState('');
   const [geslo, setGeslo] = useState('');
   const [showError, setShowError] = useState(false);
@@ -21,7 +28,7 @@ const Prijava = (props) => {
       });
 
       if (response.data.status.success) {
-        props.setStranka({
+        setStranka({
           loggedIn: true,
           stranka_id: response.data.stranka.stranka_id,
           stranka_ime: response.data.stranka.stranka_ime,
