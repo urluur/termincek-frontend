@@ -34,6 +34,37 @@ const App = (props) => {
 		storitve: []
 	});
 
+	const [narocilo, setNarocilo] = useState({
+		potrditev: false,
+		cas_potrditev: false,
+		narocilo_cas: "",
+		narocilo_opombe: "",
+		storitev_id: "",
+		stranka_id: "",
+		delavec_id: ""
+	});
+
+	const [storitev, setStoritev] = useState({
+		potrditev: false,
+		storitev_id: "",
+		storitev_ime: "",
+		storitev_opis: "",
+		storitev_slika: "",
+		storitev_trajanje: "",
+		storitev_cena: ""
+	});
+
+	const [delavci, setDelavci] = useState([
+		{
+			delavec_id: "",
+			delavec_ime: "",
+			delavec_priimek: "",
+			delavec_slika: "",
+			delavec_eposta: "",
+			delavec_telefon: ""
+		}
+	]);
+
 	return (
 		<>
 			<NavBar BusinessName={BusinessName} stranka={stranka} podjetje={podjetje} />
@@ -41,11 +72,11 @@ const App = (props) => {
 			<Container>
 				<Routes>
 
-					<Route path="/" element={<Home setPodjetje={setPodjetje} />} />
+					<Route path="/" element={<Home setPodjetje={setPodjetje} setNarocilo={setNarocilo} setStoritev={setStoritev} setDelavci={setDelavci} />} />
 
-					<Route path="/podjetje/:podjetje_id/narocanje" element={<Narocanje podjetje={podjetje} setPodjetje={setPodjetje} />} />
+					<Route path="/podjetje/:podjetje_id/narocanje" element={<Narocanje podjetje={podjetje} setPodjetje={setPodjetje} narocilo={narocilo} setNarocilo={setNarocilo} storitev={storitev} setStoritev={setStoritev} stranka={stranka} setStranka={setStranka} delavci={delavci} setDelavci={setDelavci} />} />
 					<Route path="/podjetje/:podjetje_id/zemljevid" element={<Zemljevid podjetje={podjetje} setPodjetje={setPodjetje} />} />
-					<Route path="/podjetje/:podjetje_id/kontakt" element={<Kontakt podjetje={podjetje} setPodjetje={setPodjetje} />} />
+					<Route path="/podjetje/:podjetje_id/kontakt" element={<Kontakt delavci={delavci} setDelavci={setDelavci} />} />
 
 					<Route path="/prijava" element={<Prijava setStranka={setStranka} />} />
 					<Route path="/registracija" element={<Registracija setStranka={setStranka} />} />
@@ -56,6 +87,23 @@ const App = (props) => {
 					<Route path="*" element={<h1>404</h1>} />
 
 				</Routes>
+				{
+					! // comment this line to show debug info
+					true &&
+					<>
+						Debug:
+						<p />
+						Storitev: {JSON.stringify(storitev)}
+						<p />
+						Podjetje: {JSON.stringify(podjetje)}
+						<p />
+						Stranka {JSON.stringify(stranka)}
+						<p />
+						Narocilo: {JSON.stringify(narocilo)}
+						<p />
+						Delavci: {JSON.stringify(delavci)}
+					</>
+				}
 			</Container>
 
 		</>
