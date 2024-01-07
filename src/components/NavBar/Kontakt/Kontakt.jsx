@@ -8,7 +8,8 @@ import Loading from "../../Loading/Loading";
 const Kontakt = (props) => {
 
   const { podjetje_id } = useParams();
-  const [delavci, setDelavci] = useState(null);
+  const { delavci, setDelavci } = props;
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
     axios.get(`http://localhost:5050/delavci/${podjetje_id}`)
@@ -18,7 +19,7 @@ const Kontakt = (props) => {
       .catch(error => {
         console.error('Error:', error);
       });
-  }, [podjetje_id]);
+  }, [podjetje_id, setDelavci]);
 
   if (!delavci) {
     return <Loading />
@@ -30,7 +31,8 @@ const Kontakt = (props) => {
         {delavci.map((delavec) => (
           <Col xs={6} md={4} lg={3} key={delavec.delavec_id} className="mb-4">
             <Card className="h-100 shadow-sm">
-              <Image variant="top" src={delavec.delavec_slika} alt={delavec.delavec_ime} />
+              <Image variant="top" src={delavec.delavec_slika} alt={delavec.delavec_ime} onLoad={() => setImageLoaded(true)} />
+              {!imageLoaded && <Loading />}
               <Card.Body>
                 <Card.Title>{delavec.delavec_ime} {delavec.delavec_priimek}</Card.Title>
                 <Card.Text>

@@ -36,7 +36,7 @@ function Home(props) {
 
   props.setNarocilo({
     potrditev: false,
-    potrditev_cas: false,
+    cas_potrditev: false,
     narocilo_cas: "",
     narocilo_opombe: "",
     storitev_id: "",
@@ -53,6 +53,18 @@ function Home(props) {
     storitev_trajanje: "",
     storitev_cena: ""
   });
+
+  props.setDelavci([
+    {
+      delavec_id: "",
+      delavec_ime: "",
+      delavec_priimek: "",
+      delavec_slika: "",
+      delavec_eposta: "",
+      delavec_telefon: ""
+    }
+  ]);
+
 
   return (
     <Container className='mt-5'>

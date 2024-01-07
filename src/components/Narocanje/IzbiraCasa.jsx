@@ -1,13 +1,21 @@
-import React from 'react'
-import { Col, Container, Row, Button } from 'react-bootstrap';
+import React, { useState } from 'react'
+import { Col, Container, Row, Button, Form } from 'react-bootstrap';
 
 const IzbiraCasa = (props) => {
+
+  const { delavci } = props;
+
+  // TODO: termin more actually bit fraj itd...
+
+  const [selectedDateTime, setSelectedDateTime] = useState(null);
+  const [selectedDelavec, setSelectedDelavec] = useState(null);
+
   const handleBackClick = () => {
     props.setNarocilo(prevNarocilo => {
       return {
         ...prevNarocilo,
         storitev_id: "",
-        potrditev_cas: false
+        cas_potrditev: false
       }
     });
     props.setStoritev(prevStoritev => {
@@ -18,22 +26,73 @@ const IzbiraCasa = (props) => {
     });
   }
 
+  const handleDateTimeChange = (event) => {
+    const selectedDateTime = event.target.value;
+    setSelectedDateTime(new Date(selectedDateTime));
+    props.setNarocilo(prevNarocilo => {
+      return {
+        ...prevNarocilo,
+        narocilo_cas: selectedDateTime,
+      }
+    });
+  };
+
+  const handleNextClick = () => {
+    props.setNarocilo(prevNarocilo => {
+      return {
+        ...prevNarocilo,
+        cas_potrditev: true
+      }
+    });
+  };
+
+  const isDateTimeInPast = () => {
+    const now = new Date();
+    return selectedDateTime && selectedDateTime < now;
+  };
+
+  const handleDelavecChange = (event) => {
+    const selectedDelavecId = event.target.value;
+    setSelectedDelavec(selectedDelavecId);
+    props.setNarocilo(prevNarocilo => {
+      return {
+        ...prevNarocilo,
+        delavec_id: selectedDelavecId,
+      }
+    });
+  };
+
   return (
-    <Container fluid className='mt-1'>
+    <Container className='mt-2'>
       <Row>
+        <h2 className="mb-2">Izberite termin</h2>
         <Col>
-          <h2>Izberite termin</h2>
-        </Col>
-        <Col>
+          <Form>
+            <Form.Group controlId="formDateTime">
+              <Form.Control type="datetime-local" onChange={handleDateTimeChange} className="mb-3" />
+            </Form.Group>
+            <Form.Group controlId="formDelavec" className='mb-3'>
+              <Form.Label>Izberite delavca</Form.Label>
+              <Form.Control as="select" onChange={handleDelavecChange}>
+                <option value="">-- Izberite delavca --</option>
+                {
+                  delavci.map((delavec, index) => {
+                    return (
+                      <option key={index} value={delavec.delavec_id}>{delavec.delavec_ime} {delavec.delavec_priimek}</option>
+                    );
+                  })
+                }
+              </Form.Control>
+            </Form.Group>
+          </Form>
         </Col>
       </Row>
-      <Row>
-        <div className="d-flex justify-content-start">
-          <Button variant="secondary" onClick={handleBackClick}>Spremeni storitev</Button>
-        </div>
-      </Row>
+      <div className="d-flex justify-content-between">
+        <Button variant="secondary" onClick={handleBackClick}>Spremeni storitev</Button>
+        <Button variant="primary" onClick={handleNextClick} disabled={!selectedDateTime || isDateTimeInPast() || !selectedDelavec}>Pregled naročila</Button>
+      </div>
     </Container>
-  )
+  );
 }
 
 export default IzbiraCasa

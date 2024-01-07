@@ -5,14 +5,21 @@ import { Container, Card, Row, Col } from 'react-bootstrap';
 import IzbiraStoritve from './IzbiraStoritve';
 import Loading from '../Loading/Loading';
 import IzbiraCasa from './IzbiraCasa';
+import Pregled from './Pregled';
+import Potrdilo from './Potrdilo';
 
 function Narocanje(props) {
-  const { podjetje, setPodjetje, narocilo, setNarocilo, storitev, setStoritev } = props;
+  const { podjetje, setPodjetje, narocilo, setNarocilo, storitev, setStoritev, stranka, setStranka, delavci, setDelavci } = props;
   const { podjetje_id } = useParams();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    if (stranka.loggedIn) {
+      setNarocilo(prevNarocilo => ({ ...prevNarocilo, stranka_id: stranka.stranka_id }));
+    }
+    // TODO: do something if logged out
+
     if (!podjetje.chosen) {
       axios.get(`http://localhost:5050/podjetje/${podjetje_id}`)
         .then(response => {
@@ -59,7 +66,17 @@ function Narocanje(props) {
     else {
       setIsLoading(false);
     }
-  }, [podjetje_id, navigate, podjetje, setPodjetje]);
+  }, [podjetje_id, navigate, podjetje, setPodjetje, stranka, setNarocilo]);
+
+  useEffect(() => {
+    axios.get(`http://localhost:5050/delavci/${podjetje_id}`)
+      .then(response => {
+        setDelavci(response.data);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }, [setDelavci, podjetje_id]);
 
   if (isLoading) {
     return (
@@ -97,9 +114,16 @@ function Narocanje(props) {
                         <>
                           {
                             !narocilo.cas_potrditev && !narocilo.potrditev ?
-                              <IzbiraCasa podjetje={podjetje} setNarocilo={setNarocilo} setStoritev={setStoritev} /> :
-                              <h1>Prijavite se</h1>
-                            // storitev.potrditev && !narocilo.cas_potrditev && !narocilo.potrditev
+                              <IzbiraCasa setStoritev={setStoritev} setNarocilo={setNarocilo} delavci={delavci} />
+                              :
+                              <>
+                                {
+                                  !narocilo.potrditev ?
+                                    <Pregled narocilo={narocilo} potrditev setNarocilo={setNarocilo} />
+                                    :
+                                    <Potrdilo setNarocilo={setNarocilo} />
+                                }
+                              </>
                           }
                         </>
                     }

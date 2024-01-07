@@ -1,5 +1,6 @@
 import React from 'react'
 import { Container, Row, Col, Spinner } from 'react-bootstrap'
+import './Loading.css';
 
 function Loading() {
   return (
@@ -11,7 +12,7 @@ function Loading() {
       </Row>
       <Row className="justify-content-md-center">
         <Col md="auto">
-          <span>Loading...</span>
+          <span className="loading">Loading<span className="dots"><span>.</span><span>.</span><span>.</span></span></span>
         </Col>
       </Row>
     </Container>

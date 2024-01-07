@@ -36,7 +36,7 @@ const App = (props) => {
 
 	const [narocilo, setNarocilo] = useState({
 		potrditev: false,
-		potrditev_cas: false,
+		cas_potrditev: false,
 		narocilo_cas: "",
 		narocilo_opombe: "",
 		storitev_id: "",
@@ -54,6 +54,17 @@ const App = (props) => {
 		storitev_cena: ""
 	});
 
+	const [delavci, setDelavci] = useState([
+		{
+			delavec_id: "",
+			delavec_ime: "",
+			delavec_priimek: "",
+			delavec_slika: "",
+			delavec_eposta: "",
+			delavec_telefon: ""
+		}
+	]);
+
 	return (
 		<>
 			<NavBar BusinessName={BusinessName} stranka={stranka} podjetje={podjetje} />
@@ -61,11 +72,11 @@ const App = (props) => {
 			<Container>
 				<Routes>
 
-					<Route path="/" element={<Home setPodjetje={setPodjetje} setNarocilo={setNarocilo} setStoritev={setStoritev} />} />
+					<Route path="/" element={<Home setPodjetje={setPodjetje} setNarocilo={setNarocilo} setStoritev={setStoritev} setDelavci={setDelavci} />} />
 
-					<Route path="/podjetje/:podjetje_id/narocanje" element={<Narocanje podjetje={podjetje} setPodjetje={setPodjetje} narocilo={narocilo} setNarocilo={setNarocilo} storitev={storitev} setStoritev={setStoritev} />} />
+					<Route path="/podjetje/:podjetje_id/narocanje" element={<Narocanje podjetje={podjetje} setPodjetje={setPodjetje} narocilo={narocilo} setNarocilo={setNarocilo} storitev={storitev} setStoritev={setStoritev} stranka={stranka} setStranka={setStranka} delavci={delavci} setDelavci={setDelavci} />} />
 					<Route path="/podjetje/:podjetje_id/zemljevid" element={<Zemljevid podjetje={podjetje} setPodjetje={setPodjetje} />} />
-					<Route path="/podjetje/:podjetje_id/kontakt" element={<Kontakt podjetje={podjetje} setPodjetje={setPodjetje} />} />
+					<Route path="/podjetje/:podjetje_id/kontakt" element={<Kontakt delavci={delavci} setDelavci={setDelavci} />} />
 
 					<Route path="/prijava" element={<Prijava setStranka={setStranka} />} />
 					<Route path="/registracija" element={<Registracija setStranka={setStranka} />} />
@@ -82,13 +93,15 @@ const App = (props) => {
 					<>
 						Debug:
 						<p />
-						{JSON.stringify(storitev)}
+						Storitev: {JSON.stringify(storitev)}
 						<p />
-						{JSON.stringify(podjetje)}
+						Podjetje: {JSON.stringify(podjetje)}
 						<p />
-						{JSON.stringify(stranka)}
+						Stranka {JSON.stringify(stranka)}
 						<p />
-						{JSON.stringify(narocilo)}
+						Narocilo: {JSON.stringify(narocilo)}
+						<p />
+						Delavci: {JSON.stringify(delavci)}
 					</>
 				}
 			</Container>
