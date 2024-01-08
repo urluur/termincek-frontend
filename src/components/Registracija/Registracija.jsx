@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Container, Form, Button, Row, Col, Card, Alert } from 'react-bootstrap';
 import axios from "axios";
 
-const Registracija = () => {
+const Registracija = (props) => {
+
   const [ime, setIme] = useState('');
   const [priimek, setPriimek] = useState('');
   const [eposta, setEposta] = useState('');
@@ -13,8 +15,9 @@ const Registracija = () => {
   const [isValid, setIsValid] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
+  const navigate = useNavigate();
+
   const handleInputChange = (setter) => (event) => {
-    // Clear the error message when the user starts typing
     setErrorMessage('');
     setter(event.target.value);
   };
@@ -25,6 +28,11 @@ const Registracija = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (geslo.length < 8) {
+      setErrorMessage('Dolžina gesla mora biti vsaj 8 znakov.');
+      return;
+    }
 
     if (geslo !== potrdiGeslo) {
       setErrorMessage('Gesli nista enaki.');
@@ -41,8 +49,7 @@ const Registracija = () => {
       });
 
       if (response.status === 200) {
-        // TODO: go home with react history
-        window.location.href = '/';
+        navigate('/prijava');
       }
       else {
         setErrorMessage('Registracija neuspešna.');

@@ -1,66 +1,124 @@
-import React from "react";
+import React, { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import Container from "react-bootstrap/Container";
-import ServiceChooser from "./ServiceChooser/ServiceChooser";
-import Map from "./NavBar/Map/Map";
-import Contact from "./NavBar/Contact/Contact";
-import Prijava from "./Prijava/Prijava";
-import Registracija from "./Registracija/Registracija";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import Home from "./Home";
 import NavBar from "./NavBar/NavBar";
+import Zemljevid from "./NavBar/Zemljevid/Zemljevid";
+import Kontakt from "./NavBar/Kontakt/Kontakt";
+import Prijava from "./Prijava/Prijava";
+import Registracija from "./Registracija/Registracija";
+import Narocanje from './Narocanje/Narocanje';
+import Profil from './NavBar/Profil/Profil';
+import Odjava from "./NavBar/Odjava/Odjava";
+
+import { StrankaContext, PodjetjeContext, NarociloContext, StoritevContext, DelavciContext } from "../contexts/contexts";
 
 const App = (props) => {
 	let BusinessName = "Terminček";
 
-	let sampleServices = [
+	const [stranka, setStranka] = useState({
+		loggedIn: false,
+		stranka_id: "",
+		stranka_ime: "",
+		stranka_priimek: "",
+		stranka_eposta: ""
+	});
+
+	const [podjetje, setPodjetje] = useState({
+		chosen: false,
+		podjetje_id: "",
+		podjetje_naziv: "",
+		podjetje_naslov: "",
+		podjetje_slika: "",
+		storitve: []
+	});
+
+	const [narocilo, setNarocilo] = useState({
+		potrditev: false,
+		cas_potrditev: false,
+		narocilo_cas: "",
+		narocilo_opombe: "",
+		storitev_id: "",
+		stranka_id: "",
+		delavec_id: ""
+	});
+
+	const [storitev, setStoritev] = useState({
+		potrditev: false,
+		storitev_id: "",
+		storitev_ime: "",
+		storitev_opis: "",
+		storitev_slika: "",
+		storitev_trajanje: "",
+		storitev_cena: ""
+	});
+
+	const [delavci, setDelavci] = useState([
 		{
-			name: "Striženje: kratki lasje",
-			time: 30,
-			price: 15
-		},
-		{
-			name: "Striženje: dolgi lasje",
-			time: 60,
-			price: 30
-		},
-		{
-			name: "Striženje: mašinca",
-			time: 20,
-			price: 10
-		},
-		{
-			name: "Striženje: otroško",
-			time: 30,
-			price: 8
-		},
-		{
-			name: "Barvanje: kratki lasje",
-			time: 20,
-			price: 20
-		},
-		{
-			name: "Barvanje: dolgi lasje",
-			time: 30,
-			price: 30
+			delavec_id: "",
+			delavec_ime: "",
+			delavec_priimek: "",
+			delavec_slika: "",
+			delavec_eposta: "",
+			delavec_telefon: ""
 		}
-	];
+	]);
 
 	return (
 		<>
-			<NavBar BusinessName={BusinessName} />
-			<Container>
-				<Routes>
-					<Route path="/" element={<Home />} />
-					<Route path="/narocanje" element={<ServiceChooser services={sampleServices} />} />
-					<Route path="/zemljevid" element={<Map />} />
-					<Route path="/kontakt" element={<Contact />} />
-					<Route path="/prijava" element={<Prijava />} />
-					<Route path="/registracija" element={<Registracija />} />
-					<Route path="*" element={<h1>404</h1>} />
-				</Routes>
-			</Container>
+			<StrankaContext.Provider value={{ stranka, setStranka }}>
+				<PodjetjeContext.Provider value={{ podjetje, setPodjetje }}>
+					<NarociloContext.Provider value={{ narocilo, setNarocilo }}>
+						<StoritevContext.Provider value={{ storitev, setStoritev }}>
+							<DelavciContext.Provider value={{ delavci, setDelavci }}>
+
+								<NavBar BusinessName={BusinessName} stranka={stranka} podjetje={podjetje} />
+
+								<Container>
+									<Routes>
+
+										<Route path="/" element={<Home />} />
+
+										<Route path="/podjetje/:podjetje_id/narocanje" element={<Narocanje />} />
+										<Route path="/podjetje/:podjetje_id/zemljevid" element={<Zemljevid />} />
+										<Route path="/podjetje/:podjetje_id/kontakt" element={<Kontakt />} />
+
+										<Route path="/prijava" element={<Prijava />} />
+										<Route path="/registracija" element={<Registracija />} />
+
+										<Route path='/profil' element={<Profil />} />
+										<Route path='/odjava' element={<Odjava />} />
+
+										<Route path="*" element={<h1>404</h1>} />
+
+									</Routes>
+									{
+										! // comment this line to show debug info
+										true &&
+										<>
+											Debug:
+											<p />
+											Storitev: {JSON.stringify(storitev)}
+											<p />
+											Podjetje: {JSON.stringify(podjetje)}
+											<p />
+											Stranka {JSON.stringify(stranka)}
+											<p />
+											Narocilo: {JSON.stringify(narocilo)}
+											<p />
+											Delavci: {JSON.stringify(delavci)}
+										</>
+									}
+								</Container>
+
+							</DelavciContext.Provider>
+						</StoritevContext.Provider>
+					</NarociloContext.Provider>
+				</PodjetjeContext.Provider>
+			</StrankaContext.Provider>
 		</>
 	);
 };

@@ -1,11 +1,22 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Container, Form, Button, Row, Col, Card, Alert } from 'react-bootstrap';
 import axios from "axios";
 
+import { StrankaContext } from "../../contexts/contexts";
+
+
 const Prijava = () => {
+
+  const { setStranka } = useContext(StrankaContext);
+
+
   const [eposta, setEposta] = useState('');
   const [geslo, setGeslo] = useState('');
   const [showError, setShowError] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -17,22 +28,28 @@ const Prijava = () => {
       });
 
       if (response.data.status.success) {
-        window.location.href = '/';
-        // redirect home
-        // history.push('/');
+        setStranka({
+          loggedIn: true,
+          stranka_id: response.data.stranka.stranka_id,
+          stranka_ime: response.data.stranka.stranka_ime,
+          stranka_priimek: response.data.stranka.stranka_priimek,
+          stranka_eposta: response.data.stranka.stranka_eposta
+        });
+        setShowSuccess(true);
+        setShowError(false);
+        navigate('/');
       } else {
-        // alert('Prijava neuspešna!');
         setShowError(true);
       }
     } catch (error) {
       console.error("Error: ", error);
-      // alert('Napaka pri prijavi!');
       setShowError(true);
     }
   };
 
   const handleInputChange = () => {
     setShowError(false);
+    setShowSuccess(false);
   };
 
   return (
@@ -53,6 +70,7 @@ const Prijava = () => {
                 </Form.Group>
                 <Button variant="success" type="submit" className="mt-3" disabled={!eposta || !geslo}>Prijava</Button>
                 {showError && <Alert variant="danger" className="mt-3">Prijava neuspešna!</Alert>}
+                {showSuccess && <Alert variant="success" className="mt-3">Prijava uspešna!</Alert>}
               </Form>
             </Card.Body>
           </Card>
