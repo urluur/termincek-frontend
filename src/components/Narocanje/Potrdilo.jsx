@@ -1,16 +1,25 @@
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Button, Container, Row, Col } from 'react-bootstrap';
+import { Button, Container, Row, Col, Card } from 'react-bootstrap';
 
-import { NarociloContext } from "../../contexts/contexts";
+import { NarociloContext, StoritevContext } from "../../contexts/contexts";
 
 function Potrdilo() {
   const { setNarocilo } = useContext(NarociloContext);
+  const { setStoritev } = useContext(StoritevContext);
 
   const navigate = useNavigate();
 
   const handleButtonClick = () => {
-    // TODO: reset narocilo
+    setStoritev({
+      potrditev: false,
+      storitev_id: "",
+      storitev_ime: "",
+      storitev_opis: "",
+      storitev_slika: "",
+      storitev_trajanje: "",
+      storitev_cena: ""
+    });
     setNarocilo({
       potrditev: false,
       cas_potrditev: false,
@@ -27,7 +36,14 @@ function Potrdilo() {
     <Container fluid className="d-flex flex-column">
       <Row className="mb-auto">
         <Col>
-          <div>Potrdilo</div>
+          <Card className="mb-3" style={{ 'width': '100%' }}>
+            <Card.Body>
+              <Card.Title>Naročilo potrjeno</Card.Title>
+              <Card.Text>
+                Vaše naročilo je bilo uspešno potrjeno.
+              </Card.Text>
+            </Card.Body>
+          </Card>
         </Col>
       </Row>
       <Row>

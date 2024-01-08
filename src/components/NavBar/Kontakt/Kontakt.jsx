@@ -5,7 +5,6 @@ import { Container, Card, Row, Col, Image } from 'react-bootstrap';
 
 import { DelavciContext } from "../../../contexts/contexts";
 
-
 import Loading from "../../Loading/Loading";
 
 const Kontakt = () => {

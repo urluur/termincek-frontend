@@ -38,8 +38,6 @@ const Prijava = () => {
         setShowSuccess(true);
         setShowError(false);
         navigate('/');
-
-
       } else {
         setShowError(true);
       }

@@ -54,7 +54,8 @@ const IzbiraCasa = (props) => {
   };
 
   const handleDelavecChange = (event) => {
-    const selectedDelavecId = event.target.value;
+    const selectedDelavecId = Number(event.target.value);
+
     setSelectedDelavec(selectedDelavecId);
     props.setNarocilo(prevNarocilo => {
       return {

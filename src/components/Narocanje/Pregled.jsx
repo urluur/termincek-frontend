@@ -1,15 +1,13 @@
 import React, { useContext } from 'react'
-import { Button, Card, Form } from 'react-bootstrap';
+import { Button, Card, ListGroup, Form } from 'react-bootstrap';
 import axios from 'axios';
 
-import { NarociloContext } from "../../contexts/contexts";
-
+import { NarociloContext, StoritevContext, DelavciContext } from "../../contexts/contexts";
 
 function Pregled() {
-
   const { narocilo, setNarocilo } = useContext(NarociloContext);
-
-
+  const { storitev } = useContext(StoritevContext);
+  const { delavci } = useContext(DelavciContext);
 
   const handleBackClick = () => {
     setNarocilo(prevNarocilo => ({
@@ -25,7 +23,9 @@ function Pregled() {
   };
 
   const handleSubmitClick = () => {
-    setNarocilo(prevNarocilo => ({ ...prevNarocilo, potrditev: true }));
+    if (!window.confirm("Ste prepričani, da želite poslati naročilo?")) {
+      return;
+    }
     const minNarocilo = {
       narocilo_cas: narocilo.narocilo_cas,
       narocilo_opombe: narocilo.narocilo_opombe,
@@ -36,20 +36,41 @@ function Pregled() {
     axios.post('http://localhost:5050/narocilo/novo', minNarocilo)
       .then(response => {
         console.log(response.data);
+        setNarocilo(prevNarocilo => ({ ...prevNarocilo, potrditev: true }));
       })
       .catch(error => {
         console.error('Error:', error);
+        alert("Naročilo ni bilo uspešno poslano.")
       });
   };
 
+  const matchingDelavec = delavci.find(delavec => delavec.delavec_id === narocilo.delavec_id);
+
   return (
     <div>
-      <Card className='mb-3'>
+
+      <Card className='mb-3' style={{ 'width': '100%' }}>
         <Card.Body>
-          <pre>{JSON.stringify(narocilo, null, 2)}</pre>
-          <Form.Group controlId="formOpombe">
-            <Form.Label>Opombe</Form.Label>
-            <Form.Control type="text" placeholder="Vnesite opombe" onChange={handleOpombeChange} />
+          <Card.Title>{storitev.storitev_ime}</Card.Title>
+          <Card.Subtitle className="mb-1 text-muted">
+
+            {/* display name and surname here */}
+            {matchingDelavec && `${matchingDelavec.delavec_ime} ${matchingDelavec.delavec_priimek}`}
+
+
+          </Card.Subtitle>
+          <ListGroup variant="flush">
+            <ListGroup.Item className='px-0'>Opis: {storitev.storitev_opis}</ListGroup.Item>
+            <ListGroup.Item className='px-0'>Datum: {new Date(narocilo.narocilo_cas).toLocaleString('sl-SI').split(',')[0]}</ListGroup.Item>
+            <ListGroup.Item className='px-0'>Ura: {new Date(narocilo.narocilo_cas).toLocaleTimeString('sl-SI', { hour: '2-digit', minute: '2-digit' })}</ListGroup.Item>
+          </ListGroup>
+          <Form.Group controlId="formOpombe" className='mt-1'>
+            <Form.Control
+              type="text"
+              placeholder="Vnesite opombe"
+              value={narocilo.narocilo_opombe}
+              onChange={handleOpombeChange}
+            />
           </Form.Group>
         </Card.Body>
       </Card>

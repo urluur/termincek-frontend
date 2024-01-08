@@ -3,9 +3,7 @@ import { PodjetjeContext } from "../../../contexts/contexts";
 
 const Zemljevid = () => {
 
-
   const { podjetje } = useContext(PodjetjeContext);
-
 
   return (
     <>

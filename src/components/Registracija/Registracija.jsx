@@ -1,14 +1,9 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Form, Button, Row, Col, Card, Alert } from 'react-bootstrap';
 import axios from "axios";
 
-import { StrankaContext } from "../../contexts/contexts";
-
-
 const Registracija = (props) => {
-
-  const { setStranka } = useContext(StrankaContext);
 
   const [ime, setIme] = useState('');
   const [priimek, setPriimek] = useState('');
@@ -34,6 +29,11 @@ const Registracija = (props) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    if (geslo.length < 8) {
+      setErrorMessage('Dolžina gesla mora biti vsaj 8 znakov.');
+      return;
+    }
+
     if (geslo !== potrdiGeslo) {
       setErrorMessage('Gesli nista enaki.');
       return;
@@ -49,17 +49,7 @@ const Registracija = (props) => {
       });
 
       if (response.status === 200) {
-        navigate('/');
-        setStranka(
-          {
-            loggedIn: true,
-            stranka_id: response.data.stranka_id,
-            stranka_ime: response.data.stranka_ime,
-            stranka_priimek: response.data.stranka_priimek,
-            stranka_eposta: response.data.stranka_eposta
-          }
-        );
-        window.location.href = '/';
+        navigate('/prijava');
       }
       else {
         setErrorMessage('Registracija neuspešna.');
