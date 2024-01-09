@@ -3,9 +3,16 @@ import { useNavigate } from "react-router-dom";
 
 import { StrankaContext } from "../../../contexts/contexts";
 
+import Cookie from "universal-cookie";
+const cookie = new Cookie();
+
 function Odjava() {
 
   const { setStranka } = useContext(StrankaContext);
+  const navigate = useNavigate();
+
+  cookie.remove('stranka_eposta');
+  cookie.remove('stranka_geslo');
 
   setStranka({
     loggedIn: false,
@@ -15,7 +22,6 @@ function Odjava() {
     stranka_eposta: ""
   });
 
-  const navigate = useNavigate();
   navigate('/prijava');
 
   return (

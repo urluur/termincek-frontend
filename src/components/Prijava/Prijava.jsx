@@ -1,9 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Form, Button, Row, Col, Card, Alert } from 'react-bootstrap';
 import axios from "axios";
-
 import { StrankaContext } from "../../contexts/contexts";
+
+import Cookie from "universal-cookie";
+const cookie = new Cookie();
 
 
 const Prijava = () => {
@@ -15,8 +17,38 @@ const Prijava = () => {
   const [geslo, setGeslo] = useState('');
   const [showError, setShowError] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [zampomniMe, setZapomniMe] = useState(false);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (cookie.get('stranka_eposta') && cookie.get('stranka_geslo')) {
+      setEposta(cookie.get('stranka_eposta'));
+      setGeslo(cookie.get('stranka_geslo'));
+      axios.post('http://localhost:5050/prijava', {
+        eposta: cookie.get('stranka_eposta'),
+        geslo: cookie.get('stranka_geslo')
+      })
+        .then(response => {
+          setEposta(response.data.stranka.stranka_eposta);
+          setGeslo(response.data.stranka.stranka_geslo);
+          setStranka({
+            loggedIn: true,
+            stranka_id: response.data.stranka.stranka_id,
+            stranka_ime: response.data.stranka.stranka_ime,
+            stranka_priimek: response.data.stranka.stranka_priimek,
+            stranka_eposta: response.data.stranka.stranka_eposta
+          });
+          setShowSuccess(true);
+          setShowError(false);
+          navigate('/');
+        })
+        .catch(error => {
+          setShowError(true);
+          setShowSuccess(false);
+        });
+    }
+  }, [navigate, setStranka]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -26,6 +58,20 @@ const Prijava = () => {
         eposta: eposta,
         geslo: geslo
       });
+
+      if (zampomniMe) {
+        cookie.set('stranka_eposta', eposta,
+          {
+            path: '/',
+            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 1 week
+          });
+        cookie.set('stranka_geslo', geslo,
+          {
+            path: '/',
+            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 1 week
+          });
+      }
+
 
       if (response.data.status.success) {
         setStranka({
@@ -67,6 +113,9 @@ const Prijava = () => {
                 <Form.Group className="mb-3">
                   <Form.Label>Geslo</Form.Label>
                   <Form.Control type="password" placeholder="Vnestite geslo" value={geslo} onChange={(e) => { setGeslo(e.target.value); handleInputChange(); }} />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Check type="checkbox" label="Zapomni me" checked={zampomniMe} onChange={(e) => setZapomniMe(e.target.checked)} />
                 </Form.Group>
                 <Button variant="success" type="submit" className="mt-3" disabled={!eposta || !geslo}>Prijava</Button>
                 {showError && <Alert variant="danger" className="mt-3">Prijava neuspešna!</Alert>}

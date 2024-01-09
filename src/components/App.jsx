@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -13,11 +13,14 @@ import Registracija from "./Registracija/Registracija";
 import Narocanje from './Narocanje/Narocanje';
 import Profil from './NavBar/Profil/Profil';
 import Odjava from "./NavBar/Odjava/Odjava";
-
+import Cookie from "universal-cookie";
 import { StrankaContext, PodjetjeContext, NarociloContext, StoritevContext, DelavciContext } from "../contexts/contexts";
+
+const cookie = new Cookie();
 
 const App = (props) => {
 	let BusinessName = "Terminček";
+	const navigate = useNavigate();
 
 	const [stranka, setStranka] = useState({
 		loggedIn: false,
@@ -66,6 +69,10 @@ const App = (props) => {
 			delavec_telefon: ""
 		}
 	]);
+
+	if (cookie.get('stranka_eposta') && cookie.get('stranka_geslo') && !stranka.loggedIn) {
+		navigate('/prijava');
+	}
 
 	return (
 		<>

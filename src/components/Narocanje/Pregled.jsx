@@ -35,7 +35,6 @@ function Pregled() {
     };
     axios.post('http://localhost:5050/narocilo/novo', minNarocilo)
       .then(response => {
-        console.log(response.data);
         setNarocilo(prevNarocilo => ({ ...prevNarocilo, potrditev: true }));
       })
       .catch(error => {

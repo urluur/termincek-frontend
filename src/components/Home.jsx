@@ -25,7 +25,7 @@ function Home() {
         console.error('Error:', error);
         setIsLoading(false);
       });
-  }, [setPodjetja]);
+  }, []);
 
   if (isLoading) {
     return (
