@@ -4,6 +4,7 @@ import { Container, ListGroup, Row, Col, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Loading from './Loading/Loading';
 import { PodjetjeContext, NarociloContext, StoritevContext, DelavciContext } from "../contexts/contexts";
+import { API_URL } from '../utils/utils';
 function Home() {
 
 
@@ -16,7 +17,7 @@ function Home() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    axios.get('http://localhost:5050/podjetja')
+    axios.get(API_URL + '/podjetja')
       .then(response => {
         setPodjetja(response.data);
         setIsLoading(false);
@@ -25,7 +26,7 @@ function Home() {
         console.error('Error:', error);
         setIsLoading(false);
       });
-  }, [setPodjetja]);
+  }, []);
 
   if (isLoading) {
     return (
@@ -74,7 +75,7 @@ function Home() {
 
 
   return (
-    <Container className='mt-5'>
+    <Container>
       <Row className="justify-content-md-center">
         <Col xs={12} md={6}>
           <Card>

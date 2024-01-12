@@ -6,7 +6,10 @@ import ConfirmationModal from '../../ConfirmationModal/ConfirmationModal';
 
 import { StrankaContext } from "../../../contexts/contexts";
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../../../utils/utils';
 
+import Cookie from "universal-cookie";
+const cookie = new Cookie();
 
 function EnoNarocilo({ narocilo, openPrekliciNarociloModal }) {
   return (
@@ -39,23 +42,48 @@ function Profil() {
   const navigate = useNavigate();
 
   const handleDeleteAccount = async () => {
-    axios.delete(`http://localhost:5050/stranka/${stranka.stranka_id}`);
-    setStranka({
-      stranka_id: "",
-      stranka_ime: "",
-      stranka_priimek: "",
-      stranka_eposta: "",
-      stranka_geslo: ""
-    });
-    setShowModal(false);
-    navigate('/prijava');
+    axios.delete(API_URL + `/stranka`, {
+      withCredentials: true,
+      timeout: 20000
+    })
+      .then(response => {
+        if (response.status === 200) {
+          setStranka({
+            loggedIn: false,
+            stranka_id: "",
+            stranka_ime: "",
+            stranka_priimek: "",
+            stranka_eposta: ""
+          });
+          cookie.remove('stranka_eposta');
+          cookie.remove('stranka_geslo');
+          setShowModal(false);
+          navigate('/prijava');
+        }
+        else {
+          alert("Napaka pri brisanju računa")
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
   }
 
   useEffect(() => {
     const fetchNarocila = async () => {
       try {
-        const response = await axios.get(`http://localhost:5050/narocila/${stranka.stranka_id}`);
-        setNarocila(response.data);
+        axios.get(API_URL + `/narocila`, {
+          withCredentials: true,
+          timeout: 20000
+        })
+          .then(response => {
+
+            setNarocila(response.data);
+          }
+          )
+          .catch(error => {
+            console.error('Error:', error);
+          });
       } catch (error) {
         console.error('Error:', error);
       }
@@ -66,8 +94,13 @@ function Profil() {
 
   const prekliciNarocilo = async (id) => {
     try {
-      // TODO: spremeni tako da backend dovoli le brisanje naročil, ki so od te stranke
-      await axios.delete(`http://localhost:5050/narocilo/preklici`, { data: { narocilo_id: id } });
+      await axios.delete(API_URL + `/narocilo/preklici`,
+        { data: { narocilo_id: id } },
+        {
+          withCredentials: true,
+          timeout: 20000,
+        }
+      );
 
       const newNarocila = narocila.filter(narocilo => narocilo.narocilo_id !== id);
       setNarocila(newNarocila);
@@ -80,7 +113,7 @@ function Profil() {
   const openIzbrisiRacunModal = () => {
     setModalConfig({
       title: 'Potrdite izbris računa',
-      body: 'Ali ste prepričani, da želite izbrisati vaš uporabniški račun? Tega dejanja ni mogoče razveljaviti.',
+      body: 'Ali ste prepričani, da želite izbrisati vaš uporabniški račun? Vaša naročila bodo preklicana. Tega dejanja ni mogoče razveljaviti.',
       confirmAction: handleDeleteAccount
     });
     setShowModal(true);

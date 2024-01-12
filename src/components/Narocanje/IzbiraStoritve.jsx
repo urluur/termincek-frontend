@@ -81,54 +81,52 @@ const IzbiraStoritve = () => {
   }, [storitev.storitev_id]);
 
   return (
-    <div>
-      <Container fluid className='mt-1'>
-        <Row>
-          <Col>
-            <h2>Izberite storitev</h2>
-          </Col>
-          <Col>
-            <Form.Control
-              type="text"
-              placeholder={"Iskanje"}
-              value={searchValue}
-              onChange={handleSearch}
-              className='px-3 mb-2 bg-light text-dark rounded-pill w-50 float-end'
-            />
-          </Col>
-        </Row>
+    <Container>
+      <Row>
+        <Col>
+          <h2>Izberite storitev</h2>
+        </Col>
+        <Col>
+          <Form.Control
+            type="text"
+            placeholder={"Iskanje"}
+            value={searchValue}
+            onChange={handleSearch}
+            className='px-3 mb-2 bg-light text-dark rounded-pill w-50 float-end'
+          />
+        </Col>
+      </Row>
 
-        <Row>
-          <Table striped responsive hover bordered
-            className='rounded-pill'
-          >
-            <thead>
-              <tr>
-                <th>Ime</th>
-                <th>Čas</th>
-                <th>Cena</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                iskaneStoritve.map((storitev, i) => {
-                  return (
-                    <tr key={i} onClick={() => handleRowClick(storitev)}>
-                      <td>{storitev.storitev_ime} {storitev.storitev_id === selectedRow && '✅'}</td>
-                      <td>{storitev.storitev_trajanje} min</td>
-                      <td>{storitev.storitev_cena}€</td>
-                    </tr>
-                  )
-                })
-              }
-            </tbody>
-          </Table>
-        </Row>
-        <div className="d-flex justify-content-end">
-          <Button variant="primary" onClick={handleNextClick} disabled={!storitev.storitev_id}>Določi čas</Button>
-        </div>
-      </Container>
-    </div>
+      <Row>
+        <Table striped responsive hover bordered
+          className='rounded-pill'
+        >
+          <thead>
+            <tr>
+              <th>Ime</th>
+              <th>Čas</th>
+              <th>Cena</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              iskaneStoritve.map((storitev, i) => {
+                return (
+                  <tr key={i} onClick={() => handleRowClick(storitev)}>
+                    <td>{storitev.storitev_ime} {storitev.storitev_id === selectedRow && '✅'}</td>
+                    <td>{storitev.storitev_trajanje} min</td>
+                    <td>{storitev.storitev_cena}€</td>
+                  </tr>
+                )
+              })
+            }
+          </tbody>
+        </Table>
+      </Row>
+      <div className="d-flex justify-content-end">
+        <Button variant="primary" onClick={handleNextClick} disabled={!storitev.storitev_id}>Določi čas</Button>
+      </div>
+    </Container>
   )
 }
 

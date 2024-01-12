@@ -13,7 +13,6 @@ import Registracija from "./Registracija/Registracija";
 import Narocanje from './Narocanje/Narocanje';
 import Profil from './NavBar/Profil/Profil';
 import Odjava from "./NavBar/Odjava/Odjava";
-
 import { StrankaContext, PodjetjeContext, NarociloContext, StoritevContext, DelavciContext } from "../contexts/contexts";
 
 const App = (props) => {
@@ -77,7 +76,7 @@ const App = (props) => {
 
 								<NavBar BusinessName={BusinessName} stranka={stranka} podjetje={podjetje} />
 
-								<Container>
+								<Container className="mt-3 mb-3">
 									<Routes>
 
 										<Route path="/" element={<Home />} />
@@ -112,7 +111,7 @@ const App = (props) => {
 											Delavci: {JSON.stringify(delavci)}
 										</>
 									}
-								</Container>
+								</Container >
 
 							</DelavciContext.Provider>
 						</StoritevContext.Provider>

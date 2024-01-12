@@ -33,7 +33,7 @@ function Potrdilo() {
   }
 
   return (
-    <Container fluid className="d-flex flex-column">
+    <Container>
       <Row className="mb-auto">
         <Col>
           <Card className="mb-3" style={{ 'width': '100%' }}>

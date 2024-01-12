@@ -1,8 +1,9 @@
 import React, { useContext } from 'react'
-import { Button, Card, ListGroup, Form } from 'react-bootstrap';
+import { Button, Card, ListGroup, Form, Container } from 'react-bootstrap';
 import axios from 'axios';
 
 import { NarociloContext, StoritevContext, DelavciContext } from "../../contexts/contexts";
+import { API_URL } from '../../utils/utils';
 
 function Pregled() {
   const { narocilo, setNarocilo } = useContext(NarociloContext);
@@ -33,9 +34,13 @@ function Pregled() {
       delavec_id: narocilo.delavec_id,
       storitev_id: narocilo.storitev_id
     };
-    axios.post('http://localhost:5050/narocilo/novo', minNarocilo)
+    axios.post(API_URL + '/narocilo/novo', minNarocilo,
+      {
+        withCredentials: true,
+        timeout: 20000
+      }
+    )
       .then(response => {
-        console.log(response.data);
         setNarocilo(prevNarocilo => ({ ...prevNarocilo, potrditev: true }));
       })
       .catch(error => {
@@ -47,8 +52,7 @@ function Pregled() {
   const matchingDelavec = delavci.find(delavec => delavec.delavec_id === narocilo.delavec_id);
 
   return (
-    <div>
-
+    <Container>
       <Card className='mb-3' style={{ 'width': '100%' }}>
         <Card.Body>
           <Card.Title>{storitev.storitev_ime}</Card.Title>
@@ -86,7 +90,7 @@ function Pregled() {
           </Button>
         </div>
       </div>
-    </div>
+    </Container>
   );
 }
 

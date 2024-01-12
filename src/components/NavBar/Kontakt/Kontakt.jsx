@@ -6,6 +6,7 @@ import { Container, Card, Row, Col, Image } from 'react-bootstrap';
 import { DelavciContext } from "../../../contexts/contexts";
 
 import Loading from "../../Loading/Loading";
+import { API_URL } from "../../../utils/utils";
 
 const Kontakt = () => {
 
@@ -15,7 +16,7 @@ const Kontakt = () => {
   const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
-    axios.get(`http://localhost:5050/delavci/${podjetje_id}`)
+    axios.get(API_URL + `/delavci/${podjetje_id}`)
       .then(response => {
         setDelavci(response.data);
       })

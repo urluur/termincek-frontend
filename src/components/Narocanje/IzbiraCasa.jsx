@@ -66,7 +66,7 @@ const IzbiraCasa = (props) => {
   };
 
   return (
-    <Container className='mt-2'>
+    <Container>
       <Row>
         <h2 className="mb-2">Izberite termin</h2>
         <Col>
