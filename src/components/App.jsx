@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -13,14 +13,10 @@ import Registracija from "./Registracija/Registracija";
 import Narocanje from './Narocanje/Narocanje';
 import Profil from './NavBar/Profil/Profil';
 import Odjava from "./NavBar/Odjava/Odjava";
-import Cookie from "universal-cookie";
 import { StrankaContext, PodjetjeContext, NarociloContext, StoritevContext, DelavciContext } from "../contexts/contexts";
-
-const cookie = new Cookie();
 
 const App = (props) => {
 	let BusinessName = "Terminček";
-	const navigate = useNavigate();
 
 	const [stranka, setStranka] = useState({
 		loggedIn: false,
@@ -70,10 +66,6 @@ const App = (props) => {
 		}
 	]);
 
-	if (cookie.get('stranka_eposta') && cookie.get('stranka_geslo') && !stranka.loggedIn) {
-		navigate('/prijava');
-	}
-
 	return (
 		<>
 			<StrankaContext.Provider value={{ stranka, setStranka }}>
@@ -84,7 +76,7 @@ const App = (props) => {
 
 								<NavBar BusinessName={BusinessName} stranka={stranka} podjetje={podjetje} />
 
-								<Container>
+								<Container className="mt-3 mb-3">
 									<Routes>
 
 										<Route path="/" element={<Home />} />
@@ -119,7 +111,7 @@ const App = (props) => {
 											Delavci: {JSON.stringify(delavci)}
 										</>
 									}
-								</Container>
+								</Container >
 
 							</DelavciContext.Provider>
 						</StoritevContext.Provider>

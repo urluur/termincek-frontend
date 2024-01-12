@@ -9,6 +9,7 @@ import Pregled from './Pregled';
 import Potrdilo from './Potrdilo';
 
 import { StrankaContext, PodjetjeContext, NarociloContext, StoritevContext, DelavciContext } from "../../contexts/contexts";
+import { API_URL } from '../../utils/utils';
 
 function Narocanje(props) {
 
@@ -29,7 +30,7 @@ function Narocanje(props) {
     // TODO: do something if logged out
 
     if (!podjetje.chosen) {
-      axios.get(`http://localhost:5050/podjetje/${podjetje_id}`)
+      axios.get(API_URL + `/podjetje/${podjetje_id}`)
         .then(response => {
           const tempPodjetje = response.data[0];
           setPodjetje({
@@ -47,7 +48,7 @@ function Narocanje(props) {
         }
         );
 
-      axios.get(`http://localhost:5050/storitve/${podjetje_id}`)
+      axios.get(API_URL + `/storitve/${podjetje_id}`)
         .then(response => {
           setPodjetje(prevPodjetje => {
             return {
@@ -77,7 +78,7 @@ function Narocanje(props) {
   }, [podjetje_id, navigate, podjetje, setPodjetje, stranka, setNarocilo]);
 
   useEffect(() => {
-    axios.get(`http://localhost:5050/delavci/${podjetje_id}`)
+    axios.get(API_URL + `/delavci/${podjetje_id}`)
       .then(response => {
         setDelavci(response.data);
       })

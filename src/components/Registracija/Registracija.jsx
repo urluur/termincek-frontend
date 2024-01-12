@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Form, Button, Row, Col, Card, Alert } from 'react-bootstrap';
 import axios from "axios";
+import { API_URL } from "../../utils/utils";
 
 const Registracija = (props) => {
 
@@ -40,7 +41,7 @@ const Registracija = (props) => {
     }
 
     try {
-      const response = await axios.post('http://localhost:5050/registracija', {
+      const response = await axios.post(API_URL + '/registracija', {
         ime: ime,
         priimek: priimek,
         eposta: eposta,
@@ -60,7 +61,7 @@ const Registracija = (props) => {
   };
 
   return (
-    <Container className="mt-4">
+    <Container>
       <Row className="justify-content-md-center">
         <Col xs={12} md={6}>
           <Card className="mb-4">

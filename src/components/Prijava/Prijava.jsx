@@ -1,10 +1,11 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Form, Button, Row, Col, Card, Alert } from 'react-bootstrap';
 import axios from "axios";
 import { StrankaContext } from "../../contexts/contexts";
 
 import Cookie from "universal-cookie";
+import { API_URL } from "../../utils/utils";
 const cookie = new Cookie();
 
 
@@ -25,10 +26,15 @@ const Prijava = () => {
     if (cookie.get('stranka_eposta') && cookie.get('stranka_geslo')) {
       setEposta(cookie.get('stranka_eposta'));
       setGeslo(cookie.get('stranka_geslo'));
-      axios.post('http://localhost:5050/prijava', {
+      axios.post(API_URL + '/prijava', {
         eposta: cookie.get('stranka_eposta'),
         geslo: cookie.get('stranka_geslo')
-      })
+      },
+        {
+          withCredentials: true,
+          timeout: 20000
+        }
+      )
         .then(response => {
           setEposta(response.data.stranka.stranka_eposta);
           setGeslo(response.data.stranka.stranka_geslo);
@@ -50,14 +56,19 @@ const Prijava = () => {
     }
   }, [navigate, setStranka]);
 
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:5050/prijava', {
+      const response = await axios.post(API_URL + '/prijava', {
         eposta: eposta,
         geslo: geslo
-      });
+      },
+        {
+          withCredentials: true,
+          timeout: 20000
+        });
 
       if (zampomniMe) {
         cookie.set('stranka_eposta', eposta,
@@ -99,8 +110,8 @@ const Prijava = () => {
   };
 
   return (
-    <Container className="mt-5">
-      <Row className="justify-content-md-center">
+    <Container>
+      <Row className="justify-content-md-center" >
         <Col xs={12} md={6}>
           <Card>
             <Card.Body>
@@ -124,8 +135,8 @@ const Prijava = () => {
             </Card.Body>
           </Card>
         </Col>
-      </Row>
-    </Container>
+      </Row >
+    </Container >
   );
 }
 
