@@ -2,13 +2,13 @@ import React, { useContext } from 'react'
 import { Button, Card, ListGroup, Form, Container } from 'react-bootstrap';
 import axios from 'axios';
 
-import { NarociloContext, StoritevContext, DelavciContext } from "../../contexts/contexts";
+import { NarociloContext, StoritevContext, ZaposleniContext } from "../../contexts/contexts";
 import { API_URL } from '../../utils/utils';
 
 function Pregled() {
   const { narocilo, setNarocilo } = useContext(NarociloContext);
   const { storitev } = useContext(StoritevContext);
-  const { delavci } = useContext(DelavciContext);
+  const { zaposleni } = useContext(ZaposleniContext);
 
   const handleBackClick = () => {
     setNarocilo(prevNarocilo => ({
@@ -49,7 +49,7 @@ function Pregled() {
       });
   };
 
-  const matchingDelavec = delavci.find(delavec => delavec.delavec_id === narocilo.delavec_id);
+  const matchingDelavec = zaposleni.find(delavec => delavec.delavec_id === narocilo.delavec_id);
 
   return (
     <Container>

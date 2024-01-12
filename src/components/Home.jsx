@@ -3,15 +3,16 @@ import axios from 'axios';
 import { Container, ListGroup, Row, Col, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Loading from './Loading/Loading';
-import { PodjetjeContext, NarociloContext, StoritevContext, DelavciContext } from "../contexts/contexts";
+import { PodjetjeContext, NarociloContext, StoritevContext, ZaposleniContext, StrankaContext, AdminContext } from "../contexts/contexts";
 import { API_URL } from '../utils/utils';
 function Home() {
 
-
+  const { stranka } = useContext(StrankaContext)
+  const { admin } = useContext(AdminContext)
   const { setPodjetje } = useContext(PodjetjeContext);
   const { setNarocilo } = useContext(NarociloContext);
   const { setStoritev } = useContext(StoritevContext);
-  const { setDelavci } = useContext(DelavciContext);
+  const { setZaposleni } = useContext(ZaposleniContext);
 
   const [podjetja, setPodjetja] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -28,51 +29,55 @@ function Home() {
       });
   }, []);
 
+  useEffect(() => {
+    const reset = () => {
+      setPodjetje({
+        chosen: false,
+        podjetje_id: "",
+        podjetje_naziv: "",
+        podjetje_naslov: "",
+        podjetje_slika: "",
+        storitve: []
+      });
+
+      setNarocilo({
+        potrditev: false,
+        cas_potrditev: false,
+        narocilo_cas: "",
+        narocilo_opombe: "",
+        storitev_id: "",
+        stranka_id: "",
+        delavec_id: ""
+      });
+
+      setStoritev({
+        potrditev: false,
+        storitev_id: "",
+        storitev_ime: "",
+        storitev_opis: "",
+        storitev_slika: "",
+        storitev_trajanje: "",
+        storitev_cena: ""
+      });
+
+      setZaposleni([
+        {
+          delavec_id: "",
+          delavec_ime: "",
+          delavec_priimek: "",
+          delavec_slika: "",
+          delavec_eposta: "",
+          delavec_telefon: ""
+        }
+      ]);
+    }
+    reset();
+  }, [setZaposleni, setNarocilo, setPodjetje, setStoritev]);
+
   if (isLoading) {
     return (
       <Loading />);
   }
-
-  setPodjetje({
-    chosen: false,
-    podjetje_id: "",
-    podjetje_naziv: "",
-    podjetje_naslov: "",
-    podjetje_slika: "",
-    storitve: []
-  });
-
-  setNarocilo({
-    potrditev: false,
-    cas_potrditev: false,
-    narocilo_cas: "",
-    narocilo_opombe: "",
-    storitev_id: "",
-    stranka_id: "",
-    delavec_id: ""
-  });
-
-  setStoritev({
-    potrditev: false,
-    storitev_id: "",
-    storitev_ime: "",
-    storitev_opis: "",
-    storitev_slika: "",
-    storitev_trajanje: "",
-    storitev_cena: ""
-  });
-
-  setDelavci([
-    {
-      delavec_id: "",
-      delavec_ime: "",
-      delavec_priimek: "",
-      delavec_slika: "",
-      delavec_eposta: "",
-      delavec_telefon: ""
-    }
-  ]);
-
 
   return (
     <Container>
@@ -83,7 +88,28 @@ function Home() {
               <Card.Title className="mb-4">
                 Izberite <b>Terminček</b>
               </Card.Title>
-              <Card.Text>
+              {
+                !stranka.loggedIn && !admin.loggedIn &&
+                <>
+                  <Card.Text>
+                    Ste lastnik podjetja?
+                  </Card.Text>
+                  <ListGroup variant="horizontal">
+                    <ListGroup.Item>
+                      <Link to="/prijava/delavec">
+                        Prijava za delavce
+                      </Link>
+                    </ListGroup.Item>
+                    <ListGroup.Item>
+                      <Link to="/registracija/podjetje">
+                        Registrirajte novo podjetje
+                      </Link>
+                    </ListGroup.Item>
+                  </ListGroup>
+                </>
+              }
+
+              <Card.Text className='mt-4'>
                 Podjetja:
               </Card.Text>
               <ListGroup>

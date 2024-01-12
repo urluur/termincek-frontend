@@ -41,7 +41,7 @@ const Registracija = (props) => {
     }
 
     try {
-      const response = await axios.post(API_URL + '/registracija', {
+      const response = await axios.post(API_URL + '/auth/registracija', {
         ime: ime,
         priimek: priimek,
         eposta: eposta,
