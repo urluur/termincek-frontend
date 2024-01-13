@@ -90,7 +90,7 @@ const Registracija = (props) => {
                 </Form.Group>
                 <Form.Group className="mb-3">
                   <Form.Label>Telefon</Form.Label>
-                  <Form.Control type="tel" pattern="[0-9]{3}[- ]?[0-9]{3}[- ]]?[0-9]{3}" placeholder="040-123-456" value={telefon} onChange={handleInputChange(setTelefon)} />
+                  <Form.Control type="tel" value={telefon} onChange={handleInputChange(setTelefon)} />
                 </Form.Group>
                 <Button variant="success" type="submit" className="mt-3" disabled={!isValid}>Registracija</Button>
                 {errorMessage && <Alert variant="danger" className="mt-3">{errorMessage}</Alert>}

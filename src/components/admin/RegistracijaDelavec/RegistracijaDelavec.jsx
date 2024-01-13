@@ -46,12 +46,12 @@ const RegistracijaDelavec = (props) => {
 
     try {
       const response = await axios.post(API_URL + '/auth/delavec/registracija', {
-        ime: ime,
-        priimek: priimek,
-        eposta: eposta,
-        geslo: geslo,
-        telefon: telefon,
-        slika: slika,
+        delavec_ime: ime,
+        delavec_priimek: priimek,
+        delavec_eposta: eposta,
+        delavec_geslo: geslo,
+        delavec_telefon: telefon,
+        delavec_slika: slika,
         podjetje_id: podjetje.podjetje_id
       }, {
         withCredentials: true,
@@ -99,7 +99,7 @@ const RegistracijaDelavec = (props) => {
                 </Form.Group>
                 <Form.Group className="mb-3">
                   <Form.Label>Telefon</Form.Label>
-                  <Form.Control type="tel" pattern="[0-9]{3}[- ]?[0-9]{3}[- ]]?[0-9]{3}" placeholder="040-123-456" value={telefon} onChange={handleInputChange(setTelefon)} />
+                  <Form.Control type="tel" placeholder="040-123-456" value={telefon} onChange={handleInputChange(setTelefon)} />
                 </Form.Group>
                 <Form.Group className="mb-3">
                   <Form.Label>Povezava do fotografije</Form.Label>

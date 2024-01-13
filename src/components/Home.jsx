@@ -114,7 +114,7 @@ function Home() {
               {delavec.loggedIn ?
                 <>
                   <Card.Text className='mt-4'>
-                    Pozdravljen, {delavec.delavec_ime}!
+                    Pozdravljeni, {delavec.delavec_ime}!
                   </Card.Text>
                 </>
                 :
