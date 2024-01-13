@@ -3,12 +3,12 @@ import axios from 'axios';
 import { Container, ListGroup, Row, Col, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Loading from './Loading/Loading';
-import { PodjetjeContext, NarociloContext, StoritevContext, ZaposleniContext, StrankaContext, AdminContext } from "../contexts/contexts";
+import { PodjetjeContext, NarociloContext, StoritevContext, ZaposleniContext, StrankaContext, DelavecContext } from "../contexts/contexts";
 import { API_URL } from '../utils/utils';
 function Home() {
 
   const { stranka } = useContext(StrankaContext)
-  const { admin } = useContext(AdminContext)
+  const { delavec } = useContext(DelavecContext)
   const { setPodjetje } = useContext(PodjetjeContext);
   const { setNarocilo } = useContext(NarociloContext);
   const { setStoritev } = useContext(StoritevContext);
@@ -71,8 +71,10 @@ function Home() {
         }
       ]);
     }
-    reset();
-  }, [setZaposleni, setNarocilo, setPodjetje, setStoritev]);
+    if (!delavec.loggedIn) {
+      reset();
+    }
+  }, [setZaposleni, setNarocilo, setPodjetje, setStoritev, delavec.loggedIn]);
 
   if (isLoading) {
     return (
@@ -89,7 +91,7 @@ function Home() {
                 Izberite <b>Terminček</b>
               </Card.Title>
               {
-                !stranka.loggedIn && !admin.loggedIn &&
+                !stranka.loggedIn && !delavec.loggedIn &&
                 <>
                   <Card.Text>
                     Ste lastnik podjetja?
@@ -109,16 +111,25 @@ function Home() {
                 </>
               }
 
-              <Card.Text className='mt-4'>
-                Podjetja:
-              </Card.Text>
-              <ListGroup>
-                {podjetja.map(podjetje => (
-                  <ListGroup.Item key={podjetje.podjetje_id}>
-                    <Link to={`/podjetje/${podjetje.podjetje_id}/narocanje`}> {podjetje.podjetje_naziv} </Link>
-                  </ListGroup.Item>
-                ))}
-              </ListGroup>
+              {delavec.loggedIn ?
+                <>
+                  <Card.Text className='mt-4'>
+                    Pozdravljen, {delavec.delavec_ime}!
+                  </Card.Text>
+                </>
+                :
+                <>
+                  <Card.Text className='mt-4'>
+                    Podjetja:
+                  </Card.Text>
+                  <ListGroup>
+                    {podjetja.map(podjetje => (
+                      <ListGroup.Item key={podjetje.podjetje_id}>
+                        <Link to={`/podjetje/${podjetje.podjetje_id}/narocanje`}> {podjetje.podjetje_naziv} </Link>
+                      </ListGroup.Item>
+                    ))}
+                  </ListGroup>
+                </>}
             </Card.Body>
           </Card>
         </Col>

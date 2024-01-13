@@ -4,12 +4,12 @@ import Cookie from "universal-cookie";
 import { API_URL } from "../../../utils/utils";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { AdminContext } from '../../../contexts/contexts';
+import { DelavecContext } from '../../../contexts/contexts';
 const cookie = new Cookie();
 
 function PrijavaDelavec() {
 
-  const { setAdmin } = useContext(AdminContext);
+  const { setDelavec } = useContext(DelavecContext);
 
   const [eposta, setEposta] = useState('');
   const [geslo, setGeslo] = useState('');
@@ -23,7 +23,7 @@ function PrijavaDelavec() {
     if (cookie.get('delavec_eposta') && cookie.get('delavec_geslo')) {
       setEposta(cookie.get('delavec_eposta'));
       setGeslo(cookie.get('delavec_geslo'));
-      axios.post(API_URL + '/auth/admin/prijava', {
+      axios.post(API_URL + '/auth/delavec/prijava', {
         eposta: cookie.get('delavec_eposta'),
         geslo: cookie.get('delavec_geslo')
       },
@@ -35,7 +35,7 @@ function PrijavaDelavec() {
         .then(response => {
           setEposta(response.data.delavec.delavec_eposta);
           setGeslo(response.data.delavec.delavec_geslo);
-          setAdmin({
+          setDelavec({
             loggedIn: true,
             delavec_id: response.data.delavec.delavec_id,
             delavec_ime: response.data.delavec.delavec_ime,
@@ -51,14 +51,14 @@ function PrijavaDelavec() {
           setShowSuccess(false);
         });
     }
-  }, [navigate, setAdmin]);
+  }, [navigate, setDelavec]);
 
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const response = await axios.post(API_URL + '/auth/admin/prijava', {
+      const response = await axios.post(API_URL + '/auth/delavec/prijava', {
         eposta: eposta,
         geslo: geslo
       },
@@ -68,21 +68,21 @@ function PrijavaDelavec() {
         });
 
       if (zampomniMe) {
-        // cookie.set('stranka_eposta', eposta,
-        //   {
-        //     path: '/',
-        //     expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 1 week
-        //   });
-        // cookie.set('stranka_geslo', geslo,
-        //   {
-        //     path: '/',
-        //     expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 1 week
-        //   });
+        cookie.set('delavec_eposta', eposta,
+          {
+            path: '/',
+            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 1 week
+          });
+        cookie.set('delavec_geslo', geslo,
+          {
+            path: '/',
+            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 1 week
+          });
       }
 
 
       if (response.data.status.success) {
-        setAdmin({
+        setDelavec({
           loggedIn: true,
           delavec_id: response.data.delavec.delavec_id,
           delavec_ime: response.data.delavec.delavec_ime,

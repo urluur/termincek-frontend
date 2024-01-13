@@ -72,7 +72,7 @@ function Profil() {
   useEffect(() => {
     const fetchNarocila = async () => {
       try {
-        axios.get(API_URL + `/narocila`, {
+        axios.get(API_URL + `/stranka/narocila`, {
           withCredentials: true,
           timeout: 20000
         })

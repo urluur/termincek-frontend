@@ -1,6 +1,6 @@
 import React from "react";
 
-export const AdminContext = React.createContext();
+export const DelavecContext = React.createContext();
 export const StrankaContext = React.createContext();
 export const PodjetjeContext = React.createContext();
 export const NarociloContext = React.createContext();

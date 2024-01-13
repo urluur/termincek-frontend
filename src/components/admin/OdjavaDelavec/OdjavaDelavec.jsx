@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react'
-import { AdminContext } from '../../../contexts/contexts';
+import { DelavecContext } from '../../../contexts/contexts';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_URL } from '../../../utils/utils';
@@ -7,7 +7,7 @@ import Cookie from "universal-cookie";
 const cookie = new Cookie();
 
 function OdjavaDelavec() {
-  const { setAdmin } = useContext(AdminContext);
+  const { setDelavec } = useContext(DelavecContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,8 +22,9 @@ function OdjavaDelavec() {
           cookie.remove('delavec_eposta');
           cookie.remove('delavec_geslo');
 
-          setAdmin({
+          setDelavec({
             loggedIn: false,
+            isAdmin: false,
             delavec_id: "",
             delavec_ime: "",
             delavec_priimek: "",
@@ -33,7 +34,7 @@ function OdjavaDelavec() {
           navigate('/');
         }
       })
-  }, [navigate, setAdmin]);
+  }, [navigate, setDelavec]);
 
   return (
     <></>

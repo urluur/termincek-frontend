@@ -13,15 +13,20 @@ import Registracija from "./Registracija/Registracija";
 import Narocanje from './Narocanje/Narocanje';
 import Profil from './NavBar/Profil/Profil';
 import Odjava from "./NavBar/Odjava/Odjava";
-import { StrankaContext, PodjetjeContext, NarociloContext, StoritevContext, ZaposleniContext, AdminContext } from "../contexts/contexts";
+import { StrankaContext, PodjetjeContext, NarociloContext, StoritevContext, ZaposleniContext, DelavecContext } from "../contexts/contexts";
 import NovoPodjetje from "./admin/NovoPodjetje/NovoPodjetje";
 import PrijavaDelavec from "./admin/PrijavaDelavec/PrijavaDelavec";
 import Narocila from "./admin/Narocila/Narocila";
 import OdjavaDelavec from "./admin/OdjavaDelavec/OdjavaDelavec";
+import Urnik from "./admin/Urnik/Urnik";
+import Cenik from "./admin/Cenik/Cenik";
+import PrijavaPodjetje from "./admin/PrijavaPodjetje/PrijavaPodjetje";
+import Delavci from "./admin/Delavci/Delavci";
+import RegistracijaDelavec from "./admin/RegistracijaDelavec/RegistracijaDelavec";
 
 const App = (props) => {
 
-	const [admin, setAdmin] = useState({
+	const [delavec, setDelavec] = useState({
 		loggedIn: false,
 		isAdmin: false,
 		delavec_id: "",
@@ -83,7 +88,7 @@ const App = (props) => {
 	return (
 		<>
 
-			<AdminContext.Provider value={{ admin, setAdmin }}>
+			<DelavecContext.Provider value={{ delavec: delavec, setDelavec: setDelavec }}>
 				<StrankaContext.Provider value={{ stranka, setStranka }}>
 					<PodjetjeContext.Provider value={{ podjetje, setPodjetje }}>
 						<NarociloContext.Provider value={{ narocilo, setNarocilo }}>
@@ -97,7 +102,14 @@ const App = (props) => {
 
 											<Route path="/" element={<Home />} />
 
+											{/* delavec routes */}
 											<Route path="/narocila" element={<Narocila />} />
+											<Route path="/urnik" element={<Urnik />} />
+
+											{/* admin routes */}
+											<Route path="/cenik" element={<Cenik />} />
+											<Route path="/delavci" element={<Delavci />} />
+											<Route path="/registracija/delavec" element={<RegistracijaDelavec />} />
 
 											<Route path="/podjetje/:podjetje_id/narocanje" element={<Narocanje />} />
 											<Route path="/podjetje/:podjetje_id/zemljevid" element={<Zemljevid />} />
@@ -105,6 +117,7 @@ const App = (props) => {
 
 											<Route path="/prijava" element={<Prijava />} />
 											<Route path="/prijava/delavec" element={<PrijavaDelavec />} />
+											<Route path="/prijava/podjetje" element={<PrijavaPodjetje />} />
 											<Route path="/registracija" element={<Registracija />} />
 											<Route path="/registracija/podjetje" element={<NovoPodjetje />} />
 
@@ -115,6 +128,26 @@ const App = (props) => {
 											<Route path="*" element={<h1>404</h1>} />
 
 										</Routes>
+
+										{
+											! // comment this line to show debug info
+											true &&
+											<>
+												Debug:
+												<p />
+												Storitev: {JSON.stringify(storitev)}
+												<p />
+												Podjetje: {JSON.stringify(podjetje)}
+												<p />
+												Stranka {JSON.stringify(stranka)}
+												<p />
+												Narocilo: {JSON.stringify(narocilo)}
+												<p />
+												Zaposleni: {JSON.stringify(zaposleni)}
+												<p />
+												Delavec: {JSON.stringify(delavec)}
+											</>
+										}
 									</Container >
 
 								</ZaposleniContext.Provider>
@@ -122,7 +155,7 @@ const App = (props) => {
 						</NarociloContext.Provider>
 					</PodjetjeContext.Provider>
 				</StrankaContext.Provider>
-			</AdminContext.Provider>
+			</DelavecContext.Provider>
 		</>
 	);
 };
