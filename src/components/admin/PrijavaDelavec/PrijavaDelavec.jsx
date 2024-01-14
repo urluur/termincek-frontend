@@ -1,18 +1,15 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Container, Form, Button, Row, Col, Card, Alert } from 'react-bootstrap';
-import axios from "axios";
-import { StrankaContext } from "../../contexts/contexts";
-
+import React, { useContext, useEffect, useState } from 'react'
+import { Alert, Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
 import Cookie from "universal-cookie";
-import { API_URL } from "../../utils/utils";
+import { API_URL } from "../../../utils/utils";
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { DelavecContext } from '../../../contexts/contexts';
 const cookie = new Cookie();
 
+function PrijavaDelavec() {
 
-const Prijava = () => {
-
-  const { setStranka } = useContext(StrankaContext);
-
+  const { setDelavec } = useContext(DelavecContext);
 
   const [eposta, setEposta] = useState('');
   const [geslo, setGeslo] = useState('');
@@ -23,12 +20,12 @@ const Prijava = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (cookie.get('stranka_eposta') && cookie.get('stranka_geslo')) {
-      setEposta(cookie.get('stranka_eposta'));
-      setGeslo(cookie.get('stranka_geslo'));
-      axios.post(API_URL + '/auth/prijava', {
-        eposta: cookie.get('stranka_eposta'),
-        geslo: cookie.get('stranka_geslo')
+    if (cookie.get('delavec_eposta') && cookie.get('delavec_geslo')) {
+      setEposta(cookie.get('delavec_eposta'));
+      setGeslo(cookie.get('delavec_geslo'));
+      axios.post(API_URL + '/auth/delavec/prijava', {
+        eposta: cookie.get('delavec_eposta'),
+        geslo: cookie.get('delavec_geslo')
       },
         {
           withCredentials: true,
@@ -36,32 +33,32 @@ const Prijava = () => {
         }
       )
         .then(response => {
-          setEposta(response.data.stranka.stranka_eposta);
-          setGeslo(response.data.stranka.stranka_geslo);
-          setStranka({
+          setEposta(response.data.delavec.delavec_eposta);
+          setGeslo(response.data.delavec.delavec_geslo);
+          setDelavec({
             loggedIn: true,
-            stranka_id: response.data.stranka.stranka_id,
-            stranka_ime: response.data.stranka.stranka_ime,
-            stranka_priimek: response.data.stranka.stranka_priimek,
-            stranka_eposta: response.data.stranka.stranka_eposta
+            delavec_id: response.data.delavec.delavec_id,
+            delavec_ime: response.data.delavec.delavec_ime,
+            delavec_priimek: response.data.delavec.delavec_priimek,
+            delavec_eposta: response.data.delavec.delavec_eposta
           });
           setShowSuccess(true);
           setShowError(false);
-          navigate('/');
+          navigate('/narocila');
         })
         .catch(error => {
           setShowError(true);
           setShowSuccess(false);
         });
     }
-  }, [navigate, setStranka]);
+  }, [navigate, setDelavec]);
 
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const response = await axios.post(API_URL + '/auth/prijava', {
+      const response = await axios.post(API_URL + '/auth/delavec/prijava', {
         eposta: eposta,
         geslo: geslo
       },
@@ -71,12 +68,12 @@ const Prijava = () => {
         });
 
       if (zampomniMe) {
-        cookie.set('stranka_eposta', eposta,
+        cookie.set('delavec_eposta', eposta,
           {
             path: '/',
             expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 1 week
           });
-        cookie.set('stranka_geslo', geslo,
+        cookie.set('delavec_geslo', geslo,
           {
             path: '/',
             expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 1 week
@@ -85,16 +82,16 @@ const Prijava = () => {
 
 
       if (response.data.status.success) {
-        setStranka({
+        setDelavec({
           loggedIn: true,
-          stranka_id: response.data.stranka.stranka_id,
-          stranka_ime: response.data.stranka.stranka_ime,
-          stranka_priimek: response.data.stranka.stranka_priimek,
-          stranka_eposta: response.data.stranka.stranka_eposta
+          delavec_id: response.data.delavec.delavec_id,
+          delavec_ime: response.data.delavec.delavec_ime,
+          delavec_priimek: response.data.delavec.delavec_priimek,
+          delavec_eposta: response.data.delavec.delavec_eposta
         });
         setShowSuccess(true);
         setShowError(false);
-        navigate('/');
+        navigate('/narocila');
       } else {
         setShowError(true);
       }
@@ -115,7 +112,7 @@ const Prijava = () => {
         <Col xs={12} md={6}>
           <Card>
             <Card.Body>
-              <Card.Title className="mb-4">Prijava</Card.Title>
+              <Card.Title className="mb-4">Prijava za delavce</Card.Title>
               <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3">
                   <Form.Label>E-pošta</Form.Label>
@@ -140,4 +137,4 @@ const Prijava = () => {
   );
 }
 
-export default Prijava;
+export default PrijavaDelavec

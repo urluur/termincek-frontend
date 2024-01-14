@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Form, Button, Row, Col, Card, Alert } from 'react-bootstrap';
 import axios from "axios";
-import { API_URL } from "../../utils/utils";
+import { API_URL } from "../../../utils/utils";
+import { PodjetjeContext } from "../../../contexts/contexts";
 
-const Registracija = (props) => {
+const RegistracijaDelavec = (props) => {
+
+  const { podjetje } = useContext(PodjetjeContext);
 
   const [ime, setIme] = useState('');
   const [priimek, setPriimek] = useState('');
@@ -12,6 +15,7 @@ const Registracija = (props) => {
   const [geslo, setGeslo] = useState('');
   const [potrdiGeslo, setPotrdiGeslo] = useState('');
   const [telefon, setTelefon] = useState('');
+  const [slika, setSlika] = useState('');
 
   const [isValid, setIsValid] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -24,8 +28,8 @@ const Registracija = (props) => {
   };
 
   useEffect(() => {
-    setIsValid(ime !== '' && eposta !== '' && geslo !== '' && telefon !== '');
-  }, [ime, eposta, geslo, telefon]);
+    setIsValid(ime !== '' && eposta !== '' && geslo !== '' && telefon !== '' && slika !== '');
+  }, [ime, eposta, geslo, telefon, slika]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -41,16 +45,21 @@ const Registracija = (props) => {
     }
 
     try {
-      const response = await axios.post(API_URL + '/auth/registracija', {
-        ime: ime,
-        priimek: priimek,
-        eposta: eposta,
-        geslo: geslo,
-        telefon: telefon
+      const response = await axios.post(API_URL + '/auth/delavec/registracija', {
+        delavec_ime: ime,
+        delavec_priimek: priimek,
+        delavec_eposta: eposta,
+        delavec_geslo: geslo,
+        delavec_telefon: telefon,
+        delavec_slika: slika,
+        podjetje_id: podjetje.podjetje_id
+      }, {
+        withCredentials: true,
+        timeout: 20000
       });
 
       if (response.status === 200) {
-        navigate('/prijava');
+        navigate('/delavci');
       }
       else {
         setErrorMessage('Registracija neuspešna.');
@@ -66,7 +75,7 @@ const Registracija = (props) => {
         <Col xs={12} md={6}>
           <Card className="mb-4">
             <Card.Body>
-              <Card.Title className="mb-4">Registracija</Card.Title>
+              <Card.Title className="mb-4">Registracija delavca</Card.Title>
               <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3">
                   <Form.Label>Ime</Form.Label>
@@ -90,7 +99,11 @@ const Registracija = (props) => {
                 </Form.Group>
                 <Form.Group className="mb-3">
                   <Form.Label>Telefon</Form.Label>
-                  <Form.Control type="tel" value={telefon} onChange={handleInputChange(setTelefon)} />
+                  <Form.Control type="tel" placeholder="040-123-456" value={telefon} onChange={handleInputChange(setTelefon)} />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Label>Povezava do fotografije</Form.Label>
+                  <Form.Control type="text" placeholder="https://domena.com/foto.jpg" value={slika} onChange={handleInputChange(setSlika)} />
                 </Form.Group>
                 <Button variant="success" type="submit" className="mt-3" disabled={!isValid}>Registracija</Button>
                 {errorMessage && <Alert variant="danger" className="mt-3">{errorMessage}</Alert>}
@@ -103,4 +116,4 @@ const Registracija = (props) => {
   );
 }
 
-export default Registracija;
+export default RegistracijaDelavec;
