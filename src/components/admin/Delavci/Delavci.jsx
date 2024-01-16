@@ -75,11 +75,11 @@ const Delavci = () => {
   return (
     <Container>
       <Row className="align-items-center my-3">
-        <Col md={8}>
+        <Col md={8} sm={7} xs={8}>
           <h1>Delavci</h1>
         </Col>
-        <Col md={4} className="d-flex justify-content-end">
-          <Button variant="primary" size="lg" onClick={() => navigate('/registracija/delavec')}>Dodaj delavca</Button>
+        <Col md={4} sm={5} xs={4} className="d-flex justify-content-end">
+          <Button variant="success" size="lg" onClick={() => navigate('/registracija/delavec')}>Dodaj delavca</Button>
         </Col>
       </Row>
       <Row>
@@ -96,7 +96,7 @@ const Delavci = () => {
                 </Card.Text>
                 <Row className="mt-3">
                   <Col xs={6}>
-                    <Button variant="warning" disabled="true" block onClick={() => editDelavec(delavec.delavec_id)}>Uredi podatke</Button>
+                    <Button variant="success" disabled="true" block onClick={() => editDelavec(delavec.delavec_id)}>Uredi podatke</Button>
                   </Col>
                   <Col xs={6}>
                     {

@@ -94,7 +94,7 @@ const IzbiraCasa = () => {
       </Row>
       <div className="d-flex justify-content-between">
         <Button variant="secondary" onClick={handleBackClick}>Spremeni storitev</Button>
-        <Button variant="primary" onClick={handleNextClick} disabled={!selectedDateTime || isDateTimeInPast() || !selectedDelavec}>Pregled naročila</Button>
+        <Button variant="success" onClick={handleNextClick} disabled={!selectedDateTime || isDateTimeInPast() || !selectedDelavec}>Pregled naročila</Button>
       </div>
     </Container>
   );

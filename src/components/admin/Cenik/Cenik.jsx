@@ -80,7 +80,7 @@ function Cenik() {
                       <Card.Text>Opis: {storitev.storitev_opis}</Card.Text>
                       <Card.Text>Cena: {storitev.storitev_cena}€</Card.Text>
                       <Card.Text>Čas trajanja: {storitev.storitev_trajanje} min</Card.Text>
-                      <Button className='m-1' variant="primary" onClick={() => handleEdit(storitev)}>Uredi</Button>
+                      <Button className='m-1' variant="success" onClick={() => handleEdit(storitev)}>Uredi</Button>
                       <Button className='m-1' variant="danger" onClick={() => handleDelete(storitev.storitev_id)}>Izbriši</Button>
                     </Card.Body>
                   </Col>

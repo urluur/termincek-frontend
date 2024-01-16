@@ -48,7 +48,7 @@ function Potrdilo() {
       </Row>
       <Row>
         <Col className="d-flex justify-content-end">
-          <Button onClick={handleButtonClick}>Ogled terminov</Button>
+          <Button variant='success' onClick={handleButtonClick}>Ogled terminov</Button>
         </Col>
       </Row>
     </Container>

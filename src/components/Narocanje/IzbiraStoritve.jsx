@@ -124,7 +124,7 @@ const IzbiraStoritve = () => {
         </Table>
       </Row>
       <div className="d-flex justify-content-end">
-        <Button variant="primary" onClick={handleNextClick} disabled={!storitev.storitev_id}>Določi čas</Button>
+        <Button variant="success" onClick={handleNextClick} disabled={!storitev.storitev_id}>Določi čas</Button>
       </div>
     </Container>
   )
