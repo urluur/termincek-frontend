@@ -126,8 +126,8 @@ function Urnik() {
       {showAlert && <Alert variant="danger">{alertMessage}</Alert>}
       <Row className="mb-3">
         <Card className="p-3 mb-3">
-          <h1 className="mb-3">Work hours</h1>
-          <Card.Text className="mb-3">Work hours for each day in week</Card.Text>
+          <h1 className="mb-3">Urnik</h1>
+          <Card.Text className="mb-3">Vaš fiksen tedenski urnik:</Card.Text>
           <Form onSubmit={submitWorkHours}>
             <Tabs className='nav-justified' defaultActiveKey="pon">
 
@@ -138,7 +138,7 @@ function Urnik() {
                     <Row className='mx-0 p-3 border border-top-0' key={index}>
 
                       <Col>
-                        <Form.Label>Start Time</Form.Label>
+                        <Form.Label>Začetek:</Form.Label>
                         <Form.Control
                           type="time"
                           value={timeRange.start}
@@ -147,7 +147,7 @@ function Urnik() {
                         />
                       </Col>
                       <Col>
-                        <Form.Label>End Time</Form.Label>
+                        <Form.Label>Konec:</Form.Label>
                         <Form.Control
                           type="time"
                           value={timeRange.end}
@@ -163,23 +163,23 @@ function Urnik() {
                     </Row>
                   ))}
 
-                  <Button className='my-3' variant='success' onClick={() => addTimeRange(day)}>Add Time Range</Button>
+                  <Button className='my-3' variant='success' onClick={() => addTimeRange(day)}>Dodaj časovni razpon</Button>
                 </Tab>
               ))}
 
             </Tabs>
-            <Button variant='success' type="submit">Submit</Button>
+            <Button variant='success' type="submit">Potrdi in zaključi</Button>
           </Form>
         </Card>
       </Row>
       <Row className="mb-3">
         <Card className="p-3 mb-3">
-          <h1 className="mb-3">Breaks</h1>
+          <h1 className="mb-3">Premori</h1>
           <Button variant='success' className="mb-3" onClick={() => setShowModal(true)}>Dodaj premor</Button>
           {breaks.map((breakItem) => (
             <p key={breakItem.id} className="mb-3">
               {breakItem.date} - {breakItem.duration}
-              <Button variant='success' onClick={() => cancelBreak(breakItem.id)}>Cancel</Button>
+              <Button variant='success' onClick={() => cancelBreak(breakItem.id)}>Prekliči</Button>
             </p>
           ))}
         </Card>
@@ -191,11 +191,11 @@ function Urnik() {
         <Modal.Body>
           <Form onSubmit={addBreak}>
             <Form.Group controlId="breakDate">
-              <Form.Label>Datum in čas premora</Form.Label>
+              <Form.Label>Datum in čas premora:</Form.Label>
               <Form.Control className='mb-3' type="datetime-local" value={breakDate} onChange={(e) => setBreakDate(e.target.value)} required />
             </Form.Group>
             <Form.Group controlId="breakDuration">
-              <Form.Label>Dolžina premora</Form.Label>
+              <Form.Label>Dolžina premora:</Form.Label>
               <Form.Control as="select" className='mb-3' value={breakDuration} onChange={(e) => setBreakDuration(e.target.value)} required>
                 <option value="">Izberi dolžino...</option>
                 <option value="15min">15min</option>
