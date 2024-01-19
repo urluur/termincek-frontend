@@ -26,13 +26,31 @@ const apiService = {
       })
   },
   addBreak: async (breakDate, breakDuration) => {
-    await axios.post('/api/breaks', { date: breakDate, duration: breakDuration }, {
+    const dolzinaVStoritevId = {
+      '24h': 1,
+      '12h': 2,
+      '6h': 3,
+      '3h': 4,
+      '1h': 5,
+      '30min': 6,
+      '15min': 7
+    };
+
+    const storitev_id = dolzinaVStoritevId[breakDuration];
+
+    if (!storitev_id) {
+      console.error('Napaka pri dodajanju premora');
+      return;
+    }
+
+    await axios.post(API_URL + '/premor', { cas: breakDate, storitev_id: storitev_id }, {
       withCredentials: true,
       timeout: 20000
     })
   },
-  cancelBreak: async (id) => {
-    await axios.delete(`/api/breaks/${id}`, {
+  cancelBreak: async (narocilo_id) => {
+    await axios.delete(API_URL + `/premor`, {
+      data: { narocilo_id: narocilo_id },
       withCredentials: true,
       timeout: 20000
     })
@@ -60,7 +78,7 @@ function Urnik() {
   });
 
   useEffect(() => {
-    // fetchBreaks()
+    fetchBreaks()
   }, [])
 
 
@@ -174,14 +192,19 @@ function Urnik() {
       </Row>
       <Row className="mb-3">
         <Card className="p-3 mb-3">
-          <h1 className="mb-3">Premori</h1>
-          <Button variant='success' className="mb-3" onClick={() => setShowModal(true)}>Dodaj premor</Button>
-          {breaks.map((breakItem) => (
-            <p key={breakItem.id} className="mb-3">
-              {breakItem.date} - {breakItem.duration}
-              <Button variant='success' onClick={() => cancelBreak(breakItem.id)}>Prekliči</Button>
-            </p>
-          ))}
+          <Container fluid>
+            <h1 className="mb-3">Premori</h1>
+
+            <Button variant='success' className="mb-3" onClick={() => setShowModal(true)}>Dodaj premor</Button>
+            {breaks.map((breakItem) => (
+              <p key={breakItem.narocilo_id} className="mb-3">
+                {new Date(breakItem.narocilo_cas).toLocaleString('sl-SI', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                -
+                {new Date(new Date(breakItem.narocilo_cas).getTime() + breakItem.storitev_trajanje * 60000).toLocaleTimeString('sl-SI', { hour: '2-digit', minute: '2-digit' })}
+                <Button className='ms-5' variant='success' onClick={() => cancelBreak(breakItem.narocilo_id)}>Prekliči</Button>
+              </p>
+            ))}
+          </Container>
         </Card>
       </Row>
       <Modal show={showModal} onHide={() => setShowModal(false)}>
