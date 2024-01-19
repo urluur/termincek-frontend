@@ -123,7 +123,7 @@ function PrijavaDelavec() {
                   <Form.Control type="password" placeholder="Vnestite geslo" value={geslo} onChange={(e) => { setGeslo(e.target.value); handleInputChange(); }} />
                 </Form.Group>
                 <Form.Group className="mb-3">
-                  <Form.Check type="checkbox" label="Zapomni me" checked={zampomniMe} onChange={(e) => setZapomniMe(e.target.checked)} />
+                  <Form.Check type="checkbox" label="Ostani prijavljen" checked={zampomniMe} onChange={(e) => setZapomniMe(e.target.checked)} />
                 </Form.Group>
                 <Button variant="success" type="submit" className="mt-3" disabled={!eposta || !geslo}>Prijava</Button>
                 {showError && <Alert variant="danger" className="mt-3">Prijava neuspešna!</Alert>}

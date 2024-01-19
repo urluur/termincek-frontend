@@ -82,7 +82,7 @@ function Pregled() {
         <Button variant="secondary" onClick={handleBackClick}>Spremeni čas</Button>
         <div className="ml-auto">
           <Button
-            variant="primary"
+            variant="success"
             onClick={handleSubmitClick}
             disabled={!narocilo.narocilo_cas || !narocilo.stranka_id || !narocilo.delavec_id || !narocilo.storitev_id}
           >

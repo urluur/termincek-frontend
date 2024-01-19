@@ -86,7 +86,7 @@ function NovaEditStoritev({ storitev, mode, handleClose }) {
         <Form.Control type="number" name="storitev_trajanje" value={formStoritev?.storitev_trajanje} onChange={handleChange} required className="shadow-none" />
       </Form.Group>
 
-      <Button className='mt-3' variant="primary" type="submit">
+      <Button className='mt-3' variant="success" type="submit">
         Potrdi
       </Button>
     </Form>
