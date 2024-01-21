@@ -1,11 +1,13 @@
 import React, { useContext, useState } from 'react'
 import { Col, Container, Row, Button, Form } from 'react-bootstrap';
 
-import { DelavciContext } from "../../contexts/contexts";
+import { ZaposleniContext, NarociloContext, StoritevContext } from "../../contexts/contexts";
 
-const IzbiraCasa = (props) => {
+const IzbiraCasa = () => {
 
-  const { delavci } = useContext(DelavciContext);
+  const { zaposleni } = useContext(ZaposleniContext);
+  const { setNarocilo } = useContext(NarociloContext)
+  const { setStoritev } = useContext(StoritevContext);
 
   // TODO: termin more actually bit fraj itd...
 
@@ -13,14 +15,14 @@ const IzbiraCasa = (props) => {
   const [selectedDelavec, setSelectedDelavec] = useState(null);
 
   const handleBackClick = () => {
-    props.setNarocilo(prevNarocilo => {
+    setNarocilo(prevNarocilo => {
       return {
         ...prevNarocilo,
         storitev_id: "",
         cas_potrditev: false
       }
     });
-    props.setStoritev(prevStoritev => {
+    setStoritev(prevStoritev => {
       return {
         ...prevStoritev,
         potrditev: false
@@ -31,7 +33,7 @@ const IzbiraCasa = (props) => {
   const handleDateTimeChange = (event) => {
     const selectedDateTime = event.target.value;
     setSelectedDateTime(new Date(selectedDateTime));
-    props.setNarocilo(prevNarocilo => {
+    setNarocilo(prevNarocilo => {
       return {
         ...prevNarocilo,
         narocilo_cas: selectedDateTime,
@@ -40,7 +42,7 @@ const IzbiraCasa = (props) => {
   };
 
   const handleNextClick = () => {
-    props.setNarocilo(prevNarocilo => {
+    setNarocilo(prevNarocilo => {
       return {
         ...prevNarocilo,
         cas_potrditev: true
@@ -57,7 +59,7 @@ const IzbiraCasa = (props) => {
     const selectedDelavecId = Number(event.target.value);
 
     setSelectedDelavec(selectedDelavecId);
-    props.setNarocilo(prevNarocilo => {
+    setNarocilo(prevNarocilo => {
       return {
         ...prevNarocilo,
         delavec_id: selectedDelavecId,
@@ -66,7 +68,7 @@ const IzbiraCasa = (props) => {
   };
 
   return (
-    <Container className='mt-2'>
+    <Container>
       <Row>
         <h2 className="mb-2">Izberite termin</h2>
         <Col>
@@ -79,7 +81,7 @@ const IzbiraCasa = (props) => {
               <Form.Control as="select" onChange={handleDelavecChange}>
                 <option value="">-- Izberite delavca --</option>
                 {
-                  delavci.map((delavec, index) => {
+                  zaposleni.map((delavec, index) => {
                     return (
                       <option key={index} value={delavec.delavec_id}>{delavec.delavec_ime} {delavec.delavec_priimek}</option>
                     );
@@ -92,7 +94,7 @@ const IzbiraCasa = (props) => {
       </Row>
       <div className="d-flex justify-content-between">
         <Button variant="secondary" onClick={handleBackClick}>Spremeni storitev</Button>
-        <Button variant="primary" onClick={handleNextClick} disabled={!selectedDateTime || isDateTimeInPast() || !selectedDelavec}>Pregled naročila</Button>
+        <Button variant="success" onClick={handleNextClick} disabled={!selectedDateTime || isDateTimeInPast() || !selectedDelavec}>Pregled naročila</Button>
       </div>
     </Container>
   );

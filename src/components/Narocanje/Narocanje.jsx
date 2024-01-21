@@ -8,15 +8,16 @@ import IzbiraCasa from './IzbiraCasa';
 import Pregled from './Pregled';
 import Potrdilo from './Potrdilo';
 
-import { StrankaContext, PodjetjeContext, NarociloContext, StoritevContext, DelavciContext } from "../../contexts/contexts";
+import { StrankaContext, PodjetjeContext, NarociloContext, StoritevContext, ZaposleniContext } from "../../contexts/contexts";
+import { API_URL } from '../../utils/utils';
 
 function Narocanje(props) {
 
   const { stranka } = useContext(StrankaContext);
   const { podjetje, setPodjetje } = useContext(PodjetjeContext);
   const { narocilo, setNarocilo } = useContext(NarociloContext);
-  const { storitev, setStoritev } = useContext(StoritevContext);
-  const { delavci, setDelavci } = useContext(DelavciContext);
+  const { storitev } = useContext(StoritevContext);
+  const { setZaposleni } = useContext(ZaposleniContext);
 
   const { podjetje_id } = useParams();
   const navigate = useNavigate();
@@ -26,10 +27,9 @@ function Narocanje(props) {
     if (stranka.loggedIn) {
       setNarocilo(prevNarocilo => ({ ...prevNarocilo, stranka_id: stranka.stranka_id }));
     }
-    // TODO: do something if logged out
 
     if (!podjetje.chosen) {
-      axios.get(`http://localhost:5050/podjetje/${podjetje_id}`)
+      axios.get(API_URL + `/podjetja/${podjetje_id}`)
         .then(response => {
           const tempPodjetje = response.data[0];
           setPodjetje({
@@ -47,7 +47,7 @@ function Narocanje(props) {
         }
         );
 
-      axios.get(`http://localhost:5050/storitve/${podjetje_id}`)
+      axios.get(API_URL + `/storitve/${podjetje_id}`)
         .then(response => {
           setPodjetje(prevPodjetje => {
             return {
@@ -77,14 +77,14 @@ function Narocanje(props) {
   }, [podjetje_id, navigate, podjetje, setPodjetje, stranka, setNarocilo]);
 
   useEffect(() => {
-    axios.get(`http://localhost:5050/delavci/${podjetje_id}`)
+    axios.get(API_URL + `/delavci/${podjetje_id}`)
       .then(response => {
-        setDelavci(response.data);
+        setZaposleni(response.data);
       })
       .catch(error => {
         console.error('Error:', error);
       });
-  }, [setDelavci, podjetje_id]);
+  }, [setZaposleni, podjetje_id]);
 
   if (isLoading) {
     return (
@@ -117,19 +117,19 @@ function Narocanje(props) {
                   <>
                     {
                       !storitev.potrditev && !narocilo.cas_potrditev && !narocilo.potrditev ?
-                        <IzbiraStoritve podjetje={podjetje} setNarocilo={setNarocilo} storitev={storitev} setStoritev={setStoritev} />
+                        <IzbiraStoritve />
                         :
                         <>
                           {
                             !narocilo.cas_potrditev && !narocilo.potrditev ?
-                              <IzbiraCasa setStoritev={setStoritev} setNarocilo={setNarocilo} delavci={delavci} />
+                              <IzbiraCasa />
                               :
                               <>
                                 {
                                   !narocilo.potrditev ?
-                                    <Pregled narocilo={narocilo} potrditev setNarocilo={setNarocilo} />
+                                    <Pregled />
                                     :
-                                    <Potrdilo setNarocilo={setNarocilo} />
+                                    <Potrdilo />
                                 }
                               </>
                           }
