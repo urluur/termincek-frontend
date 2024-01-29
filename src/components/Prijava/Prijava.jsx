@@ -61,46 +61,51 @@ const Prijava = () => {
     event.preventDefault();
 
     try {
-      const response = await axios.post(API_URL + '/auth/prijava', {
+      await axios.post(API_URL + '/auth/prijava', {
         eposta: eposta,
         geslo: geslo
-      },
-        {
-          withCredentials: true,
-          timeout: 20000
+      }, {
+        withCredentials: true,
+        timeout: 20000
+      })
+        .then(response => {
+          console.log(response);
+          if (zampomniMe) {
+            cookie.set('stranka_eposta', eposta,
+              {
+                path: '/',
+                expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 1 week
+              });
+            cookie.set('stranka_geslo', geslo,
+              {
+                path: '/',
+                expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 1 week
+              });
+          }
+
+
+          if (response.data.status.success) {
+            setStranka({
+              loggedIn: true,
+              stranka_id: response.data.stranka.stranka_id,
+              stranka_ime: response.data.stranka.stranka_ime,
+              stranka_priimek: response.data.stranka.stranka_priimek,
+              stranka_eposta: response.data.stranka.stranka_eposta
+            });
+            setShowSuccess(true);
+            setShowError(false);
+            navigate('/');
+          } else {
+            setShowError(true);
+          }
+        })
+        .catch(error => {
+          setShowError(true);
+          setShowSuccess(false);
         });
-
-      if (zampomniMe) {
-        cookie.set('stranka_eposta', eposta,
-          {
-            path: '/',
-            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 1 week
-          });
-        cookie.set('stranka_geslo', geslo,
-          {
-            path: '/',
-            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 1 week
-          });
-      }
-
-
-      if (response.data.status.success) {
-        setStranka({
-          loggedIn: true,
-          stranka_id: response.data.stranka.stranka_id,
-          stranka_ime: response.data.stranka.stranka_ime,
-          stranka_priimek: response.data.stranka.stranka_priimek,
-          stranka_eposta: response.data.stranka.stranka_eposta
-        });
-        setShowSuccess(true);
-        setShowError(false);
-        navigate('/');
-      } else {
-        setShowError(true);
-      }
-    } catch (error) {
-      console.error("Error: ", error);
-      setShowError(true);
+    }
+    catch (err) {
+      console.log(err);
     }
   };
 

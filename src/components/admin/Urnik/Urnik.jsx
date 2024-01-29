@@ -5,14 +5,14 @@ import { API_URL } from '../../../utils/utils'
 
 const apiService = {
   fetchBreaks: async () => {
-    const response = await axios.get(`${API_URL}/premori`, {
+    const response = await axios.get(`${API_URL}/api/premori`, {
       withCredentials: true,
       timeout: 20000
     })
     return response.data
   },
   submitWorkHours: async (workHours) => {
-    await axios.post(API_URL + '/urnik', {
+    await axios.post(API_URL + '/api/urnik', {
       workHours: workHours,
     }, {
       withCredentials: true,
@@ -43,13 +43,13 @@ const apiService = {
       return;
     }
 
-    await axios.post(API_URL + '/premor', { cas: breakDate, storitev_id: storitev_id }, {
+    await axios.post(API_URL + '/api/premor', { cas: breakDate, storitev_id: storitev_id }, {
       withCredentials: true,
       timeout: 20000
     })
   },
   cancelBreak: async (narocilo_id) => {
-    await axios.delete(API_URL + `/premor`, {
+    await axios.delete(API_URL + `/api/premor`, {
       data: { narocilo_id: narocilo_id },
       withCredentials: true,
       timeout: 20000

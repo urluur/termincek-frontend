@@ -41,14 +41,14 @@ function NovaEditStoritev({ storitev, mode, handleClose }) {
     try {
       let response;
       if (mode === 'edit') {
-        response = await axios.post(API_URL + "/storitev/uredi/" + formStoritev.storitev_id, formStoritev, {
+        response = await axios.post(API_URL + "/api/storitev/uredi/" + formStoritev.storitev_id, formStoritev, {
           withCredentials: true,
           timeout: 20000
         });
       } else {
         // set podjetje_id
         formStoritev.podjetje_id = podjetje.podjetje_id;
-        response = await axios.post(API_URL + "/storitev/nova", formStoritev, {
+        response = await axios.post(API_URL + "/api/storitev/nova", formStoritev, {
           withCredentials: true,
           timeout: 20000
         });

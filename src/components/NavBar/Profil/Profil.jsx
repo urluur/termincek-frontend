@@ -42,7 +42,7 @@ function Profil() {
   const navigate = useNavigate();
 
   const handleDeleteAccount = async () => {
-    axios.delete(API_URL + `/stranka`, {
+    axios.delete(API_URL + `/api/stranka`, {
       withCredentials: true,
       timeout: 20000
     })
@@ -72,7 +72,7 @@ function Profil() {
   useEffect(() => {
     const fetchNarocila = async () => {
       try {
-        axios.get(API_URL + `/stranka/narocila`, {
+        axios.get(API_URL + `/api/stranka/narocila`, {
           withCredentials: true,
           timeout: 20000
         })
@@ -94,7 +94,7 @@ function Profil() {
 
   const prekliciNarocilo = async (id) => {
     try {
-      await axios.delete(API_URL + `/narocilo/preklici`,
+      await axios.delete(API_URL + `/api/narocilo/preklici`,
         { data: { narocilo_id: id } },
         {
           withCredentials: true,

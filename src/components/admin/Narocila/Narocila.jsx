@@ -33,7 +33,7 @@ function Narocila() {
   useEffect(() => {
     const fetchNarocila = async () => {
       try {
-        axios.get(API_URL + `/delavec/narocila`, {
+        axios.get(API_URL + `/api/delavec/narocila`, {
           withCredentials: true,
           timeout: 20000
         })
@@ -54,7 +54,7 @@ function Narocila() {
 
   const prekliciNarocilo = async (id) => {
     try {
-      await axios.delete(API_URL + `/narocilo/preklici`, // TODO: se ze delauca
+      await axios.delete(API_URL + `/api/narocilo/preklici`, // TODO: se ze delauca
         { data: { narocilo_id: id } },
         {
           withCredentials: true,

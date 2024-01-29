@@ -13,7 +13,7 @@ function Cenik() {
 
 
   const fetchStoritve = useCallback(() => {
-    axios.get(API_URL + "/storitve/" + podjetje.podjetje_id)
+    axios.get(API_URL + "/api/storitve/" + podjetje.podjetje_id)
       .then(response => {
         setStoritve(response.data);
       })
@@ -28,7 +28,7 @@ function Cenik() {
 
   const handleDelete = (id) => {
     // delete storitev
-    axios.delete(API_URL + "/storitev/" + id, {
+    axios.delete(API_URL + "/api/storitev/" + id, {
       withCredentials: true,
       timeout: 20000
     })

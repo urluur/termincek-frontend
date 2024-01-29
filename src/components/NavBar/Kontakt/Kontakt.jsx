@@ -16,7 +16,7 @@ const Kontakt = () => {
   const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
-    axios.get(API_URL + `/delavci/${podjetje_id}`)
+    axios.get(API_URL + `/api/delavci/${podjetje_id}`)
       .then(response => {
         setZaposleni(response.data);
       })

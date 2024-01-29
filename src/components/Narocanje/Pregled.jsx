@@ -34,7 +34,7 @@ function Pregled() {
       delavec_id: narocilo.delavec_id,
       storitev_id: narocilo.storitev_id
     };
-    axios.post(API_URL + '/narocilo/novo', minNarocilo,
+    axios.post(API_URL + '/api/narocilo/novo', minNarocilo,
       {
         withCredentials: true,
         timeout: 20000

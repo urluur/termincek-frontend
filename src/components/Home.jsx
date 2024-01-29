@@ -18,7 +18,7 @@ function Home() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(API_URL + '/podjetja')
+    axios.get(API_URL + '/api/podjetja')
       .then(response => {
         setPodjetja(response.data);
         setIsLoading(false);
