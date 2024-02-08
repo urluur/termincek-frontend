@@ -19,7 +19,7 @@ const Delavci = () => {
 
   // pridobi vse delavce
   useEffect(() => {
-    axios.get(API_URL + `/delavci/${podjetje.podjetje_id}`)
+    axios.get(API_URL + `/api/delavci/${podjetje.podjetje_id}`)
       .then(response => {
         setZaposleni(response.data);
       })
@@ -29,7 +29,7 @@ const Delavci = () => {
   }, [podjetje, setZaposleni]);
 
   const deleteDelavec = (id) => {
-    axios.delete(API_URL + `/delavec`, { // TODO: backand: more biti admin in isto podjetje
+    axios.delete(API_URL + `/api/delavec`, { // TODO: backand: more biti admin in isto podjetje
       data: {
         target_delavec_id: id
       }
@@ -46,7 +46,7 @@ const Delavci = () => {
   }
 
   const deletePodjetje = () => {
-    axios.delete(API_URL + `/podjetje`, { // TODO: backand: more biti admin in isto podjetje
+    axios.delete(API_URL + `/api/podjetje`, { // TODO: backand: more biti admin in isto podjetje
       data: {
         target_podjetje_id: podjetje.podjetje_id
       }

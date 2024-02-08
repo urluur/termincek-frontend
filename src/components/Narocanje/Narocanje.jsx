@@ -29,7 +29,7 @@ function Narocanje(props) {
     }
 
     if (!podjetje.chosen) {
-      axios.get(API_URL + `/podjetja/${podjetje_id}`)
+      axios.get(API_URL + `/api/podjetja/${podjetje_id}`)
         .then(response => {
           const tempPodjetje = response.data[0];
           setPodjetje({
@@ -47,7 +47,7 @@ function Narocanje(props) {
         }
         );
 
-      axios.get(API_URL + `/storitve/${podjetje_id}`)
+      axios.get(API_URL + `/api/storitve/${podjetje_id}`)
         .then(response => {
           setPodjetje(prevPodjetje => {
             return {
@@ -77,7 +77,7 @@ function Narocanje(props) {
   }, [podjetje_id, navigate, podjetje, setPodjetje, stranka, setNarocilo]);
 
   useEffect(() => {
-    axios.get(API_URL + `/delavci/${podjetje_id}`)
+    axios.get(API_URL + `/api/delavci/${podjetje_id}`)
       .then(response => {
         setZaposleni(response.data);
       })

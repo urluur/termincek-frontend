@@ -13,9 +13,9 @@ function NavBar() {
 
 	const renderLink = (path, label) => {
 		return location.pathname === path ? (
-			<Nav.Link disabled>{label}</Nav.Link>
+			<Nav.Link as="div" disabled>{label}</Nav.Link>
 		) : (
-			<Nav.Link><Link className="text-dark" to={path}>{label}</Link></Nav.Link>
+			<Nav.Link as={Link} className="text-dark" to={path}>{label}</Nav.Link>
 		);
 	};
 
