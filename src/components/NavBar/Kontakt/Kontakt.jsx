@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { Container, Card, Row, Col, Image } from 'react-bootstrap';
+import { Container, Card, Row, Col, Image, ListGroup } from 'react-bootstrap';
 
 import { ZaposleniContext } from "../../../contexts/contexts";
 
@@ -39,16 +39,17 @@ const Kontakt = () => {
               {!imageLoaded && <Loading />}
               <Card.Body>
                 <Card.Title>{delavec.delavec_ime} {delavec.delavec_priimek}</Card.Title>
-                <Card.Text>
-                  <p>{delavec.delavec_eposta}</p>
-                  <p>{delavec.delavec_telefon}</p>
-                </Card.Text>
+                <ListGroup variant="flush">
+                  <ListGroup.Item className="px-0">{delavec.delavec_eposta}</ListGroup.Item>
+                  <ListGroup.Item className="px-0">{delavec.delavec_telefon}</ListGroup.Item>
+                </ListGroup>
               </Card.Body>
             </Card>
           </Col>
-        ))}
-      </Row>
-    </Container>
+        ))
+        }
+      </Row >
+    </Container >
   );
 }
 
