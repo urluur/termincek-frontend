@@ -134,7 +134,7 @@ const Prijava = () => {
                   <Form.Check type="checkbox" label="Ostani prijavljen" checked={zampomniMe} onChange={(e) => setZapomniMe(e.target.checked)} />
                 </Form.Group>
                 <Button variant="success" type="submit" className="mt-3" disabled={!eposta || !geslo}>Prijava</Button>
-                {showError && <Alert variant="danger" className="mt-3">Prijava neuspešna!</Alert>}
+                {showError && <Alert variant="danger" className="mt-3">Prijava neuspešna! 🚨</Alert>}
                 {showSuccess && <Alert variant="success" className="mt-3">Prijava uspešna!</Alert>}
               </Form>
             </Card.Body>

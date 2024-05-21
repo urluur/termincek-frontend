@@ -22,7 +22,7 @@ const apiService = {
         alert("SUCCESS: " + JSON.stringify(response.data))
       })
       .catch(error => {
-        alert("ERROR, MONA: " + JSON.stringify(error))
+        alert("ERROR: " + JSON.stringify(error))
       })
   },
   addBreak: async (breakDate, breakDuration) => {
